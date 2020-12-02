@@ -1,20 +1,18 @@
 import re
 import operator
 
+def parse(input):
+    first, second, char, word = input
+    first, second = int(first), int(second)
+    return(first, second, char, word)
+
 def is_password1(input):
-    min_count = int(input[0])
-    max_count = int(input[1])
-    character = input[2]
-    password = input[3]
+    min_count, max_count, character, password = parse(input)
     return password.count(character) >= min_count and password.count(character) <= max_count
 
 def is_password2(input):
-    # do the min max stuff in a separate function
-    min_count = int(input[0])
-    max_count = int(input[1])
-    character = input[2]
-    password = input[3]
-    return operator.xor(password[min_count-1] == character, password[max_count-1] == character)
+    first_char, second_char, character, password = parse(input)
+    return operator.xor(password[first_char-1] == character, password[second_char-1] == character)
 
 
 with open('inputs/02') as inputfile:
