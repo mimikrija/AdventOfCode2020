@@ -7,7 +7,7 @@ def parse(input):
 
 def is_password1(input):
     min_count, max_count, character, password = parse(input)
-    return password.count(character) >= min_count and password.count(character) <= max_count
+    return max_count >= password.count(character) >= min_count
 
 def is_password2(input):
     first_char, second_char, character, password = parse(input)
