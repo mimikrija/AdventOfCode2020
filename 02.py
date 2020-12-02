@@ -1,7 +1,7 @@
 import re
 
-def parse(input):
-    first, second, char, word = input
+def parse(unparsed_rule):
+    first, second, char, word = unparsed_rule
     first, second = int(first), int(second)
     return(first, second, char, word)
 
