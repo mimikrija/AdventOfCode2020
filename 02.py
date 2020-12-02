@@ -21,16 +21,12 @@ with open('inputs/02') as inputfile:
 
 words =re.compile(r'\w+')
 
-rules = []
-for line in inputs:
-    rules.append(re.findall(words,line))
-
 solution1 = 0
-for rule in rules:
-    solution1 += is_password1(rule)
-
 solution2 = 0
-for rule in rules:
+
+for line in inputs:
+    rule = re.findall(words,line)
+    solution1 += is_password1(rule)
     solution2 += is_password2(rule)
 
 print(f'The number of valid passwords is {solution1}!')
