@@ -17,13 +17,13 @@ def is_password2(input):
 with open('inputs/02') as inputfile:
     inputs = inputfile.readlines()
 
-words =re.compile(r'\w+')
+words = re.compile(r'\w+')
 
 part_1 = 0
 part_2 = 0
 
 for line in inputs:
-    rule = re.findall(words,line)
+    rule = re.findall(words, line)
     part_1 += is_password1(rule)
     part_2 += is_password2(rule)
 
