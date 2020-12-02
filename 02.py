@@ -1,5 +1,4 @@
 import re
-import operator
 
 def parse(input):
     first, second, char, word = input
@@ -12,7 +11,7 @@ def is_password1(input):
 
 def is_password2(input):
     first_char, second_char, character, password = parse(input)
-    return operator.xor(password[first_char-1] == character, password[second_char-1] == character)
+    return (password[first_char-1] == character) ^ (password[second_char-1] == character)
 
 
 with open('inputs/02') as inputfile:
