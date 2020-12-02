@@ -33,4 +33,7 @@ solution2 = 0
 for rule in rules:
     solution2 += is_password2(rule)
 
-print(solution2)
+print(f'The number of valid passwords is {solution1}!')
+print(f'The number of valid passwords is {solution2}, following the second rule!')
+# The number of valid passwords is 536!
+# The number of valid passwords is 558, following the second rule!
