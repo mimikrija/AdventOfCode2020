@@ -1,4 +1,5 @@
 import re
+import operator
 
 def is_password1(input):
     min_count = int(input[0])
@@ -13,7 +14,7 @@ def is_password2(input):
     max_count = int(input[1])
     character = input[2]
     password = input[3]
-    return ( password[min_count-1] == character and password[max_count-1] != character) or ( password[min_count-1] != character and password[max_count-1] == character)
+    return operator.xor(password[min_count-1] == character, password[max_count-1] == character)
 
 
 with open('inputs/02') as inputfile:
