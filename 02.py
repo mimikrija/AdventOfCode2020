@@ -1,11 +1,20 @@
 import re
 
-def is_password(input):
+def is_password1(input):
     min_count = int(input[0])
     max_count = int(input[1])
     character = input[2]
     password = input[3]
     return password.count(character) >= min_count and password.count(character) <= max_count
+
+def is_password2(input):
+    # do the min max stuff in a separate function
+    min_count = int(input[0])
+    max_count = int(input[1])
+    character = input[2]
+    password = input[3]
+    return ( password[min_count-1] == character and password[max_count-1] != character) or ( password[min_count-1] != character and password[max_count-1] == character)
+
 
 with open('inputs/02') as inputfile:
     inputs = inputfile.readlines()
@@ -18,6 +27,10 @@ for line in inputs:
 
 solution1 = 0
 for rule in rules:
-    solution1 += is_password(rule)
+    solution1 += is_password1(rule)
 
-print(solution1)
+solution2 = 0
+for rule in rules:
+    solution2 += is_password2(rule)
+
+print(solution2)
