@@ -14,15 +14,8 @@ with open('inputs/03') as inputfile:
 inputs = [row.strip() for row in inputs]
 row_length = len(inputs[0])
 
-part_1 = 0
-part_2 = 1
-slopes = [1, 3, 5, 7]
-position_counter = 0
-
-
-for column_pos, row in enumerate(inputs):
-    part_1 += is_tree(row, column_pos*3)
-
+ratios_to_check = [ (c,r) for r in range (1,3) for c in range (1,8,2) if r != 2 or c < r ]
+# [(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)] (part 2 ratios to check)
 
 for slope in slopes:
     temp_2 = 0
