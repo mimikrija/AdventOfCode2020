@@ -14,7 +14,7 @@ with open('inputs/03') as inputfile:
 inputs = [row.strip() for row in inputs]
 row_length = len(inputs[0])
 
-ratios_to_check = [ (c,r) for r in range (1,3) for c in range (1,8,2) if r != 2 or c < r ]
+ratios_to_check = [(c,r) for r in range (1,3) for c in range (1,8,2) if r != 2 or c < r]
 # [(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)] (part 2 ratios to check)
 
 all_ratios_tree_count = []
@@ -28,7 +28,7 @@ for count in all_ratios_tree_count:
         part_2 *= count
 
 
-print(f'Part 1 solution is: {part_1}! {part_1 == 292}')
-print(f'Part 2 solution is: {part_2}! {part_2 == 9354744432}')
+print(f'Part 1 solution is: {part_1}')
+print(f'Part 2 solution is: {part_2}')
 # Part 1 solution is: 292!
 # Part 2 solution is: 9354744432!
