@@ -17,21 +17,14 @@ row_length = len(inputs[0])
 ratios_to_check = [ (c,r) for r in range (1,3) for c in range (1,8,2) if r != 2 or c < r ]
 # [(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)] (part 2 ratios to check)
 
-for slope in slopes:
-    temp_2 = 0
-    for column_pos, row in enumerate(inputs):
-        temp_2 += is_tree(row, column_pos*slope)
-    if temp_2 > 0:
-        part_2 *= temp_2
+all_ratios_tree_count = []
+for n, ratio in enumerate(ratios_to_check):
+    all_ratios_tree_count.append(tree_count(inputs,*ratio))
 
-
-temp_2 = 0
-for column_pos, row in enumerate(inputs):
-    if column_pos%2 == 0:
-        temp_2 += is_tree(row, column_pos//2)
-
-if temp_2 > 0:
-    part_2 *= temp_2
+part_1 = all_ratios_tree_count[1]
+part_2 = 1
+for count in all_ratios_tree_count:
+    part_2 *= count
 
 
 print(f'Part 1 solution is: {part_1}! {part_1 == 292}')
