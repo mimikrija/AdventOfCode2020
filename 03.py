@@ -17,7 +17,7 @@ row_length = len(inputs[0])
 ratios_to_check = [(c,r) for r in range (1,3) for c in range (1,8,2) if r != 2 or c < r]
 # [(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)] (part 2 ratios to check)
 
-all_ratios_tree_count = [tree_count(inputs,*ratio) for n, ratio in enumerate(ratios_to_check)]
+all_ratios_tree_count = [tree_count(inputs,*ratio) for ratio in ratios_to_check]
 
 part_1 = all_ratios_tree_count[1]
 part_2 = 1
