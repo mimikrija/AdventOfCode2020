@@ -24,7 +24,8 @@ for n, ratio in enumerate(ratios_to_check):
 part_1 = all_ratios_tree_count[1]
 part_2 = 1
 for count in all_ratios_tree_count:
-    part_2 *= count
+    if count != 0:
+        part_2 *= count
 
 
 print(f'Part 1 solution is: {part_1}! {part_1 == 292}')
