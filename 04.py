@@ -1,15 +1,10 @@
 from itertools import chain
 
 # part 1 check:
-def check_key(passport,key):
-    return key in passport.keys()
-
 passport_fields = ['byr', 'iyr', 'eyr', 'hgt', 'hcl', 'ecl', 'pid', 'cid']
+
 def are_all_keys_in_passport(passport):
-    status = True
-    for key in passport_fields[:-1]: # minus one because 'cid' is not mandatory
-        status = status and check_key(passport,key)
-    return status
+    return all(field in passport for field in passport_fields[:-1])
 
 # part 2 checks:
 def is_byr_valid(test_value):
