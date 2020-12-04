@@ -62,7 +62,7 @@ def is_value_valid(key,test_value):
             return True
 
 def is_passport_valid(passport):
-    status = True
+    status = are_all_keys_in_passport(passport)
     for field, value in passport.items():
         status = status and is_value_valid(field, value)
     return status
@@ -94,12 +94,9 @@ for item in clean_passport_data:
 
 
 part_1 = 0
-for passport in all_passports:
-    part_1 += are_all_keys_in_passport(passport)
-
 part_2 = 0
 for passport in all_passports:
-    if are_all_keys_in_passport(passport):
+        part_1 += are_all_keys_in_passport(passport)
         part_2 += is_passport_valid(passport)
 
 
