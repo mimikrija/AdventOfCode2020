@@ -1,12 +1,9 @@
 from itertools import chain
 
-# part 1 check:
+# define passport fields
 passport_fields = ['byr', 'iyr', 'eyr', 'hgt', 'hcl', 'ecl', 'pid', 'cid']
 
-def are_all_keys_in_passport(passport):
-    return all(field in passport for field in passport_fields[:-1])
-
-# part 2 checks:
+# part 2 sub-checks:
 def is_byr_valid(test_value):
     return 1920 <= int(test_value) <= 2002
 
@@ -48,6 +45,11 @@ def is_cid_valid(test_value=0):
 # so we have everything in one place
 passport_checks = { field: eval('is_' + field + '_valid') for field in passport_fields }
 
+# part 1 check
+def are_all_keys_in_passport(passport):
+    return all(field in passport for field in passport_fields[:-1])
+
+# part 2 check
 def is_passport_valid(passport):
     if not are_all_keys_in_passport(passport):
         return False
