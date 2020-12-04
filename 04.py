@@ -62,20 +62,11 @@ def is_passport_valid(passport):
     return status
 
 
-with open('inputs/04') as inputfile:
-    inputs = inputfile.readlines()
 
-# parse input
-raw_passport_data = [line.strip().split(' ') for line in inputs]
-clean_passport_data = []
-while [''] in raw_passport_data:
-    single_passport = raw_passport_data[0:raw_passport_data.index([''])]
-    clean_passport_data.append(single_passport)
-    raw_passport_data = raw_passport_data[ raw_passport_data.index([''])+1: ]
-clean_passport_data.append(raw_passport_data) # append what's left
+# read & parse input
+passports = open('inputs/04').read().split('\n\n')
+clean_passport_data = [passport.strip().split() for passport in passports]
 
-# flatten list:
-clean_passport_data = [list(chain(*item)) for item in clean_passport_data]
 
 # generate a list of all passports
 all_passports = []
