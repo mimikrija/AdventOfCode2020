@@ -4,27 +4,34 @@ from itertools import chain
 passport_fields = ['byr', 'iyr', 'eyr', 'hgt', 'hcl', 'ecl', 'pid', 'cid']
 required_fields = passport_fields[:-1]
 
+# part 2 sub-sub checks:
+def is_str_to_int_in_range(test_value, minimum, maximum):
+    try:
+        return minimum <= int(test_value) <= maximum
+    except:
+        return False
+
 # part 2 sub-checks:
 def is_byr_valid(test_value):
-    return 1920 <= int(test_value) <= 2002
+    return is_str_to_int_in_range(test_value, 1920, 2002)
 
 def is_iyr_valid(test_value):
-    return 2010 <= int(test_value) <= 2020
+    return is_str_to_int_in_range(test_value, 2010, 2020)
 
 def is_eyr_valid(test_value):
-    return 2020 <= int(test_value) <= 2030
+    return is_str_to_int_in_range(test_value, 2020, 2030)
 
 def is_hgt_valid(test_value):
     if test_value[-2:] == 'cm':
-        return 150 <= int(test_value[:-2]) <= 193
+        return is_str_to_int_in_range(test_value[:-2], 150, 193)
     if test_value[-2:] == 'in':
-        return 59 <= int(test_value[:-2]) <= 76
+        return is_str_to_int_in_range(test_value[:-2], 59, 76)
     return False
 
 def is_hcl_valid(test_value):
     try:
         int(test_value[1:],16)
-        return test_value[0] == '#' and len(test_value)==7
+        return test_value[0] == '#' and len(test_value) == 7
     except:
         return False
 
@@ -39,7 +46,7 @@ def is_pid_valid(test_value):
     except:
         return False
 
-def is_cid_valid(test_value=0):
+def is_cid_valid(test_value):
     return True
 
 # generate a dictionary of test functions corresponding to passport fields
