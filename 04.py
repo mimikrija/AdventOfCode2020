@@ -1,5 +1,3 @@
-from itertools import chain
-
 # define passport fields
 passport_fields = ['byr', 'iyr', 'eyr', 'hgt', 'hcl', 'ecl', 'pid', 'cid']
 required_fields = passport_fields[:-1]
@@ -62,7 +60,6 @@ def is_passport_valid(passport):
     if not are_all_keys_in_passport(passport):
         return False
     return all(passport_checks[field](value) for field, value in passport.items())
-
 
 
 # read & parse input
