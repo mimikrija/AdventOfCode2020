@@ -2,9 +2,11 @@ from itertools import chain
 def check_key(passport,key):
     return key in passport.keys()
 
+passport_fields = ['byr', 'iyr', 'eyr', 'hgt', 'hcl','ecl', 'pid', 'cid']
+
 def are_all_keys_in_passport(passport):
     status = True
-    for key in ['byr', 'iyr', 'eyr', 'hgt', 'hcl','ecl', 'pid']:
+    for key in passport_fields[:-1]:
         status = status and check_key(passport,key)
     return status
 
@@ -43,28 +45,19 @@ def is_pid_valid(test_value):
     except:
         return False
 
-def is_value_valid(key,test_value):
-        if key == 'byr':
-            return is_byr_valid(test_value)
-        if key == 'iyr':
-            return is_iyr_valid(test_value)
-        if key == 'eyr':
-            return is_eyr_valid(test_value)
-        if key == 'hgt':
-            return is_hgt_valid(test_value)
-        if key == 'hcl':
-            return is_hcl_valid(test_value)
-        if key == 'ecl':
-            return is_ecl_valid(test_value)
-        if key == 'pid':
-            return is_pid_valid(test_value)
-        if key == 'cid':
-            return True
+def is_cid_valid(test_value=0):
+    return True
+
+# generate a dictionary of test functions corresponding to passport fields so we have
+# everything in one place
+passport_checks = { field: eval('is_' + field + '_valid') for field in passport_fields }
 
 def is_passport_valid(passport):
     status = are_all_keys_in_passport(passport)
     for field, value in passport.items():
-        status = status and is_value_valid(field, value)
+            if not status:
+                return False
+            status = status and passport_checks[field](value)
     return status
 
 
