@@ -64,23 +64,17 @@ def is_passport_valid(passport):
 
 
 # read & parse input
-passports = open('inputs/04').read().split('\n\n')
-clean_passport_data = [passport.strip().split() for passport in passports]
-
-
-# generate a list of all passports
-all_passports = []
-for item in clean_passport_data:
-    single_passport = {}
-    for data in item:
-        passport_key, passport_value = data.split(':')
-        single_passport[passport_key] = passport_value
-    all_passports.append(single_passport)
+# 1. read data in bulks split by \n\n
+passports_input = open('inputs/04').read().split('\n\n')
+# 2. generate a list of consolidated strings per password
+passports_input = [passport.strip().split() for passport in passports_input]
+# 3. generate a list of dictionaries, each dict represents a single passport
+passports = [{data.split(':')[0]: data.split(':')[1] for data in passport} for passport in passports_input]
 
 # solve puzzle
 part_1 = 0
 part_2 = 0
-for passport in all_passports:
+for passport in passports:
         part_1 += are_all_keys_in_passport(passport)
         part_2 += is_passport_valid(passport)
 
