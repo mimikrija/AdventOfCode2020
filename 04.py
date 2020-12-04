@@ -25,13 +25,11 @@ def is_hgt_valid(test_value):
     return False
 
 def is_hcl_valid(test_value):
-    if test_value[0] == '#' and len(test_value)==7:
-        try:
-            int(test_value[1:],16)
-            return True
-        except:
-            return False
-    return False
+    try:
+        int(test_value[1:],16)
+        return test_value[0] == '#' and len(test_value)==7
+    except:
+        return False
 
 def is_ecl_valid(test_value):
     return test_value in ['amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth']
@@ -39,13 +37,11 @@ def is_ecl_valid(test_value):
 
 
 def is_pid_valid(test_value):
-    if len(test_value) == 9:
-        try:
-            int(test_value)
-            return True
-        except:
-            return False
-    return False
+    try:
+        int(test_value)
+        return len(test_value) == 9
+    except:
+        return False
 
 def is_value_valid(key,test_value):
         if key == 'byr':
