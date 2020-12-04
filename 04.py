@@ -8,7 +8,42 @@ def are_all_keys_in_passport(passport):
         status = status and check_key(passport,key)
     return status
 
+def is_byr_valid(test_value):
+    return 1920 <= int(test_value) <= 2002
 
+def is_iyr_valid(test_value):
+    return 2010 <= int(test_value) <= 2020
+
+def is_eyr_valid(test_value):
+    return 2020 <= int(test_value) <= 2030
+
+def is_hgt_valid(test_value):
+    if test_value[-2:] == 'cm':
+        return 150 <= int(test_value[:-2]) <= 193
+    if test_value[-2:] == 'in':
+        return 59 <= int(test_value[:-2]) <= 76
+    return False
+
+def is_hcl_valid(test_value):
+    if test_value[0] == '#' and len(test_value)==7:
+        try:
+            int(test_value[1:],16)
+            return True
+        except:
+            return False
+    return False
+
+def is_ecl_valid(test_value):
+    return test_value in ['amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth']
+
+def is_pid_valid(test_value):
+    if len(test_value) == 9:
+        try:
+            int(test_value)
+            return True
+        except:
+            return False
+    return False
 
 with open('inputs/04') as inputfile:
     inputs = inputfile.readlines()
@@ -46,3 +81,4 @@ part_2 = 0
 
 print(f'There are {part_1} valid passports in part 1!')
 # There are 230 valid passports in part 1!
+
