@@ -35,6 +35,8 @@ def is_hcl_valid(test_value):
 
 def is_ecl_valid(test_value):
     return test_value in ['amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth']
+    return False
+
 
 def is_pid_valid(test_value):
     if len(test_value) == 9:
@@ -44,6 +46,31 @@ def is_pid_valid(test_value):
         except:
             return False
     return False
+
+def is_value_valid(key,test_value):
+        if key == 'byr':
+            return is_byr_valid(test_value)
+        if key == 'iyr':
+            return is_iyr_valid(test_value)
+        if key == 'eyr':
+            return is_eyr_valid(test_value)
+        if key == 'hgt':
+            return is_hgt_valid(test_value)
+        if key == 'hcl':
+            return is_hcl_valid(test_value)
+        if key == 'ecl':
+            return is_ecl_valid(test_value)
+        if key == 'pid':
+            return is_pid_valid(test_value)
+        if key == 'cid':
+            return True
+
+def is_passport_valid(passport):
+    status = True
+    for field, value in passport.items():
+        status = status and is_value_valid(field, value)
+    return status
+
 
 with open('inputs/04') as inputfile:
     inputs = inputfile.readlines()
@@ -75,10 +102,13 @@ for passport in all_passports:
     part_1 += are_all_keys_in_passport(passport)
 
 part_2 = 0
-# for passport_value in all_passports:
-#     if are_all_keys_in_passport(passport):
-#         part_2 += 0
+for passport in all_passports:
+    if are_all_keys_in_passport(passport):
+        part_2 += is_passport_valid(passport)
+
 
 print(f'There are {part_1} valid passports in part 1!')
+print(f'There are {part_2} valid passports in part 2!') #not 175
 # There are 230 valid passports in part 1!
+# There are 156 valid passports in part 2!
 
