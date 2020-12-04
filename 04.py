@@ -1,15 +1,17 @@
 from itertools import chain
+
+# part 1 check:
 def check_key(passport,key):
     return key in passport.keys()
 
-passport_fields = ['byr', 'iyr', 'eyr', 'hgt', 'hcl','ecl', 'pid', 'cid']
-
+passport_fields = ['byr', 'iyr', 'eyr', 'hgt', 'hcl', 'ecl', 'pid', 'cid']
 def are_all_keys_in_passport(passport):
     status = True
-    for key in passport_fields[:-1]:
+    for key in passport_fields[:-1]: # minus one because 'cid' is not mandatory
         status = status and check_key(passport,key)
     return status
 
+# part 2 checks:
 def is_byr_valid(test_value):
     return 1920 <= int(test_value) <= 2002
 
@@ -37,7 +39,6 @@ def is_ecl_valid(test_value):
     return test_value in ['amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth']
     return False
 
-
 def is_pid_valid(test_value):
     try:
         int(test_value)
@@ -48,8 +49,8 @@ def is_pid_valid(test_value):
 def is_cid_valid(test_value=0):
     return True
 
-# generate a dictionary of test functions corresponding to passport fields so we have
-# everything in one place
+# generate a dictionary of test functions corresponding to passport fields
+# so we have everything in one place
 passport_checks = { field: eval('is_' + field + '_valid') for field in passport_fields }
 
 def is_passport_valid(passport):
@@ -64,19 +65,19 @@ def is_passport_valid(passport):
 with open('inputs/04') as inputfile:
     inputs = inputfile.readlines()
 
-
+# parse input
 raw_passport_data = [line.strip().split(' ') for line in inputs]
 clean_passport_data = []
 while [''] in raw_passport_data:
     single_passport = raw_passport_data[0:raw_passport_data.index([''])]
     clean_passport_data.append(single_passport)
     raw_passport_data = raw_passport_data[ raw_passport_data.index([''])+1: ]
-clean_passport_data.append(raw_passport_data)
+clean_passport_data.append(raw_passport_data) # append what's left
 
-
-
+# flatten list:
 clean_passport_data = [list(chain(*item)) for item in clean_passport_data]
 
+# generate a list of all passports
 all_passports = []
 for item in clean_passport_data:
     single_passport = {}
@@ -85,16 +86,14 @@ for item in clean_passport_data:
         single_passport[passport_key] = passport_value
     all_passports.append(single_passport)
 
-
+# solve puzzle
 part_1 = 0
 part_2 = 0
 for passport in all_passports:
         part_1 += are_all_keys_in_passport(passport)
         part_2 += is_passport_valid(passport)
 
-
 print(f'There are {part_1} valid passports in part 1!')
 print(f'There are {part_2} valid passports in part 2!') #not 175
 # There are 230 valid passports in part 1!
 # There are 156 valid passports in part 2!
-
