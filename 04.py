@@ -49,12 +49,9 @@ def is_cid_valid(test_value=0):
 passport_checks = { field: eval('is_' + field + '_valid') for field in passport_fields }
 
 def is_passport_valid(passport):
-    status = are_all_keys_in_passport(passport)
-    for field, value in passport.items():
-            if not status:
-                return False
-            status = status and passport_checks[field](value)
-    return status
+    if not are_all_keys_in_passport(passport):
+        return False
+    return all(passport_checks[field](value) for field, value in passport.items())
 
 
 
