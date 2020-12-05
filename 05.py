@@ -24,8 +24,9 @@ def find_my_seat(input_list):
 selected_seats = [seat_ID(boarding_pass.strip()) for boarding_pass in boarding_passes]
 
 part_1 = max(selected_seats)
-print(part_1)
-
 part_2 = find_my_seat(selected_seats)
-print(part_2)
-print(selected_seats[10:17])
+
+print(f'The highest seat ID is {part_1}!')
+print(f'My seat ID is: {part_2}!')
+# The highest seat ID is 826!
+# My seat ID is: 678!
