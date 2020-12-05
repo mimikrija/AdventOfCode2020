@@ -14,11 +14,14 @@ def seat_ID(code):
     row, column = get_seat_position(code)
     return row*8 + column
 
-part_1 = 0
+
+selected_seats = [seat_ID(boarding_pass) for boarding_pass in boarding_passes ]
+
+part_1 = max(selected_seats)
+print(part_1)
 all_seats = []
 for boarding_pass in boarding_passes:
     boarding_pass = boarding_pass.strip()
-    part_1 = max(part_1,  seat_ID(boarding_pass))
     all_seats.append(seat_ID(boarding_pass))
 
 print(part_1)
