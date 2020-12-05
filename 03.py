@@ -2,12 +2,17 @@ def is_tree(row, column):
     # if column is out of range, the map continues hence %
     return row[column%row_length] == "#"
 
-def tree_count(rows, ratio):
-    delta_column, delta_row = ratio
+def get_column_position(row_number, slope):
+    delta_column, delta_row = slope
+    return row_number * delta_column // delta_row
+    # we need to divide by delta_row in case it is > 1
+    # otherwise we would end up with a smaller slope
+
+def tree_count(rows, slope):
+    _, delta_row = slope
     count = 0
-    for row_n, row in enumerate(rows):
-        if row_n%delta_row == 0:
-            count += is_tree(row, (row_n*delta_column)//delta_row)
+    for row_number in range(0, len(rows), delta_row):
+        count += is_tree(rows[row_number], get_column_position(row_number, slope))
     return count
 
 with open('inputs/03') as inputfile:
@@ -16,14 +21,14 @@ with open('inputs/03') as inputfile:
 rows = [row.strip() for row in rows]
 row_length = len(rows[0])
 
-ratios_to_check = [(c,r) for r in range (1,3) for c in range (1,8,2) if r != 2 or c < r]
-# [(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)] (part 2 ratios to check)
+slopes_to_check = [(c,r) for r in range (1,3) for c in range (1,8,2) if r != 2 or c < r]
+# [(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)] (part 2 slopes to check)
 
-all_ratios_tree_count = [tree_count(rows, ratio) for ratio in ratios_to_check]
+all_slopes_tree_count = [tree_count(rows, slope) for slope in slopes_to_check]
 
-part_1 = all_ratios_tree_count[1]
+part_1 = all_slopes_tree_count[1]
 part_2 = 1
-for count in all_ratios_tree_count:
+for count in all_slopes_tree_count:
     if count != 0:
         part_2 *= count
 
