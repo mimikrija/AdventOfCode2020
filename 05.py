@@ -14,17 +14,17 @@ def seat_ID(code):
     row, column = get_seat_position(code)
     return row*8 + column
 
+def find_my_seat(list_of_seats):
+    list_of_seats.sort()
+    for i in range(len(list_of_seats)-1):
+        if list_of_seats[i + 1] - list_of_seats[i] == 2:
+            return list_of_seats[i] + 1
 
-selected_seats = [seat_ID(boarding_pass.strip()) for boarding_pass in boarding_passes ]
+
+selected_seats = [seat_ID(boarding_pass.strip()) for boarding_pass in boarding_passes]
 
 part_1 = max(selected_seats)
 print(part_1)
-all_seats = []
-for boarding_pass in boarding_passes:
-    boarding_pass = boarding_pass.strip()
-    all_seats.append(seat_ID(boarding_pass))
 
-all_seats.sort()
-for i in range(len(all_seats)-1):
-    if all_seats[i + 1] - all_seats[i] == 2:
-        print(all_seats[i] + 1 )
+part_2 = find_my_seat(selected_seats)
+print(part_2)
