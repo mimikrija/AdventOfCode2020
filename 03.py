@@ -1,5 +1,6 @@
-def is_tree(row, column_count):
-    return row[column_count%row_length] == "#"
+def is_tree(row, column):
+    # if column is out of range, the map continues hence %
+    return row[column%row_length] == "#"
 
 def tree_count(rows, column_multiplier, row_multiplier):
     count = 0
