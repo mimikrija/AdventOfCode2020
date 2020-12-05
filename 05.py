@@ -14,8 +14,8 @@ def seat_ID(code):
     row, column = get_seat_position(code)
     return row*8 + column
 
-def find_my_seat(list_of_seats):
-    list_of_seats.sort()
+def find_my_seat(input_list):
+    list_of_seats = sorted(input_list)
     for i in range(len(list_of_seats)-1):
         if list_of_seats[i + 1] - list_of_seats[i] == 2:
             return list_of_seats[i] + 1
@@ -28,3 +28,4 @@ print(part_1)
 
 part_2 = find_my_seat(selected_seats)
 print(part_2)
+print(selected_seats[10:17])
