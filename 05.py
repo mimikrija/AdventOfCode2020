@@ -1,16 +1,17 @@
 with open('inputs/05') as inputfile:
     boarding_passes = inputfile.readlines()
 
-#boarding_passes = [ int('R' == digit) for boarding_pass in boarding_passes for digit in boarding_pass ]
+def code_to_binary(code):
+    code = code.replace('R','1').replace('B','1').replace('F','0').replace('L','0')
+    return(code)
+
 part_1 = 0
 all_seats = []
 for boarding_pass in boarding_passes:
-    row_binary = ''
-    seat_binary = ''
-    for digit in boarding_pass[:7]:
-        row_binary += str(int('B' == digit))
-    for digit in boarding_pass [-4:-1]: #strip line
-        seat_binary += str(int('R' == digit))
+    boarding_pass = boarding_pass.strip()
+    row_binary = code_to_binary(boarding_pass[:7])
+    seat_binary = code_to_binary(boarding_pass [-3:])
+
     part_1 = max(part_1,  int(row_binary,2)*8+ int(seat_binary,2))
     all_seats.append(int(row_binary,2)*8+ int(seat_binary,2))
 
