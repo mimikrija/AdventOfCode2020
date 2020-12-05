@@ -10,13 +10,16 @@ def get_seat_position(code):
     column = code_to_binary(code [-3:])
     return(int(row,2), int(column,2))
 
+def seat_ID(code):
+    row, column = get_seat_position(code)
+    return row*8 + column
+
 part_1 = 0
 all_seats = []
 for boarding_pass in boarding_passes:
     boarding_pass = boarding_pass.strip()
-    row, column = get_seat_position(boarding_pass)
-    part_1 = max(part_1,  row*8 + column)
-    all_seats.append(row*8 + column)
+    part_1 = max(part_1,  seat_ID(boarding_pass))
+    all_seats.append(seat_ID(boarding_pass))
 
 print(part_1)
 all_seats.sort()
