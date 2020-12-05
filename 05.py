@@ -2,7 +2,7 @@ with open('inputs/05') as inputfile:
     boarding_passes = inputfile.readlines()
 
 def code_to_binary(code):
-    code = code.replace('R','1').replace('B','1').replace('F','0').replace('L','0')
+    code = code.strip().replace('R','1').replace('B','1').replace('F','0').replace('L','0')
     return(code)
 
 def get_seat_position(code):
