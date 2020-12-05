@@ -13,6 +13,7 @@ def get_seat_position(code):
 def seat_ID(code):
     row, column = get_seat_position(code)
     return row*8 + column
+    # this could have been just: return code_to_binary(code)
 
 def find_my_seat(input_list):
     for seat in range(min(input_list), max(input_list)):
