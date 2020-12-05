@@ -16,9 +16,11 @@ def seat_ID(code):
     # this could have been just: return code_to_binary(code)
 
 def find_my_seat(input_list):
-    for seat in range(min(input_list), max(input_list)):
-        if seat not in input_list:
-            return seat
+    list_of_seats = sorted(input_list)
+    for i in range(len(list_of_seats)-1):
+        if list_of_seats[i + 1] - list_of_seats[i] == 2:
+            return list_of_seats[i] + 1
+
 
 selected_seats = [seat_ID(boarding_pass.strip()) for boarding_pass in boarding_passes]
 
