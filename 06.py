@@ -14,8 +14,8 @@ for answers in customs_input:
     for _, num in count_answers.items():
         part_2 += num == people_in_group
 
-print(part_1)
-# 6778
+print(f'The sum of all questions answered is: {part_1}!')
+# The sum of all questions answered is: 6778!
 
-print(part_2)
-# 3406
+print(f'The sum of questions answered by everyone in the group is: {part_2}!')
+# The sum of questions answered by everyone in the group is: 3406!
