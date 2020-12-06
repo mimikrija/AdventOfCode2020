@@ -11,8 +11,8 @@ for answers in customs_input:
     part_1 += len(count_answers) - ('\n' in count_answers.keys())
     # part 2: count only letters that appear in *every* line of bulk
     people_in_group = count_answers['\n'] + 1
-    for _, num in count_answers.items():
-        part_2 += num == people_in_group
+    for count_letters in count_answers.values():
+        part_2 += count_letters == people_in_group
 
 print(f'The sum of all questions answered is: {part_1}!')
 # The sum of all questions answered is: 6778!
