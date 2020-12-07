@@ -1,4 +1,6 @@
-with open('inputs/07') as inputfile:
+import re
+
+with open('inputs/07-ex') as inputfile:
     inputs = inputfile.readlines()
 
 everything = [line.strip() for line in inputs]
@@ -15,3 +17,12 @@ part_1 = find_outter_bags(['shiny gold'],[])
 
 print(f'{part_1} bag colors contain at least one shiny gold bag!')
 # 246 bag colors contain at least one shiny gold bag!
+
+def count_bags(quantities, children_quantities):
+    quantities = [int(num) for num in quantities]
+    children_quantities = [int(num) for num in children_quantities]
+    count = sum(quantities)
+    for multi, qt in zip(quantities, children_quantities):
+        count += multi*qt
+    return count
+
