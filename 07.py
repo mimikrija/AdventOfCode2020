@@ -42,3 +42,7 @@ for rule in everything:
     children = [children, quantities]
     bags_dict[bag] = children
 
+part_2 = count_bags('shiny gold')
+
+print(f'Shiny gold bag contains {part_2} bags!')
+# Shiny gold bag contains 2976 bags!
