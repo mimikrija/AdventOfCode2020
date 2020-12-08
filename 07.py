@@ -9,11 +9,11 @@ def find_outter_bags(find_next, all_solutions):
     while find_next != []:
         for bag in find_next:
             find_next = [rule.split(' bags contain')[0] for rule in everything if bag in rule and rule.find(bag) != 0]
-            find_outter_bags(find_next,all_solutions)
+            find_outter_bags(find_next, all_solutions)
             all_solutions += find_next
     return len(set(all_solutions))
 
-part_1 = find_outter_bags(['shiny gold'],[])
+part_1 = find_outter_bags(['shiny gold'], [])
 
 print(f'{part_1} bag colors contain at least one shiny gold bag!')
 # 246 bag colors contain at least one shiny gold bag!
@@ -35,12 +35,11 @@ re_two_words = re.compile(r'[a-z]+ [a-z]+')
 
 bags_dict = {}
 for rule in everything:
-    bag, children = rule.split(' bags contain')
-    quantities = re.findall(re_digits,children)
+    left, right = rule.split(' bags contain')
+    quantities = re.findall(re_digits,right)
     quantities = [int(qt) for qt in quantities]
-    children = re.findall(re_two_words,children)
-    children = [children, quantities]
-    bags_dict[bag] = children
+    children = re.findall(re_two_words,right)
+    bags_dict[left] = [children, quantities]
 
 part_2 = count_bags('shiny gold')
 
