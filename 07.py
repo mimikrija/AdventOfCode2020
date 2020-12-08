@@ -25,4 +25,16 @@ def count_bags(quantities, children_quantities):
     for multi, qt in zip(quantities, children_quantities):
         count += multi*qt
     return count
+# parse input into dictionary
+re_digits = re.compile(r'\d')
+re_two_words = re.compile(r'[a-z]+ [a-z]+')
+
+bags_dict = {}
+for rule in everything:
+    bag, children = rule.split(' bags contain')
+    quantities = re.findall(re_digits,children)
+    quantities = [int(qt) for qt in quantities]
+    children = re.findall(re_two_words,children)
+    children = [children, quantities]
+    bags_dict[bag] = children
 
