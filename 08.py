@@ -20,16 +20,16 @@ def run_program(instructions):
 
     while current_position not in visited_positions:
         if current_position == len(instructions):
-            print('success')
             break
         visited_positions.append(current_position)
         action, argument = instructions[current_position]
         acc_offset, position_offset = do_stuff(action, argument)
         current_acc += acc_offset
         current_position += position_offset
-    return(current_acc, current_position) # 1553
+    return(current_acc, current_position)
 
-print(run_program(instructions))
+print(f'Part 1 solution is: {run_program(instructions)[0]}!')
+# Part 1 solution is: 1553!
 
 for n, instruction in enumerate(instructions):
     action, argument = instruction
@@ -41,8 +41,10 @@ for n, instruction in enumerate(instructions):
     new_instructions[n] = (new_action, argument)
     current_acc, current_position = run_program(new_instructions)
     if current_position == len(new_instructions):
-        print(current_acc)
+        print(f'Part 2 solution is: {current_acc}!')
         break
+# Part 2 solution is: 1877!
+
 # success:  1877 this one
 # success:  505 not
 # success:  895 not
