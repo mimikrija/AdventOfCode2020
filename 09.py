@@ -4,6 +4,7 @@ with open('inputs/09') as inputfile:
 inputs = [int(line.strip()) for line in inputs]
 
 def is_sum(check_list, number):
+    """ Check if the sum of any two numbers in `check_list` equals to `number` """
     for i, num1 in enumerate(check_list):
         for num2 in check_list[i+1:]:
             if num1 + num2 == number and num1 != num2:
