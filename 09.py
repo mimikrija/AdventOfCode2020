@@ -21,8 +21,6 @@ for position in range(start, len(inputs)):
         part_1 = inputs[position]
         break
 
-print(part_1) # 32321523
-
 for position in range (0, len(inputs)):
     for size in range (3, len(inputs)):
         # create a sublist of size 2+
@@ -34,5 +32,7 @@ for position in range (0, len(inputs)):
         part_2 = min(check_in) + max(check_in)
         break
 
-print(part_2) # 4794981
-
+print(f'The first number that is not the sum of any two of the 25 numbers before it is {part_1}!')
+print(f'The encryption weakness in my XMAS-encrypted list is: {part_2}!')
+# The first number that is not the sum of any two of the 25 numbers before it is 32321523!
+# The encryption weakness in my XMAS-encrypted list is: 4794981!
