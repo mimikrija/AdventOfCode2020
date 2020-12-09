@@ -24,14 +24,14 @@ for position in range (start,len(inputs)):
 
 print(part_1) # 32321523
 
-def is_encryption_weakness(check_list,number):
-    return sum(check_list) == number
-
-start = 0
-for position in range (start, len(inputs)):
+for position in range (0, len(inputs)):
     for size in range (3,len(inputs)):
         check_in = inputs[position:size]
-        if is_encryption_weakness(check_in, part_1):
-            print(min(check_in),max(check_in), ' = ', min(check_in) + max(check_in))
+        if sum(check_in) >= part_1:
             break
+    if sum(check_in) == part_1:
+        part_2 = min(check_in) + max(check_in)
+        break
+
+print(part_2) # 4794981
 
