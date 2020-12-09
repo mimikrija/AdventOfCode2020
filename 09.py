@@ -13,7 +13,6 @@ def is_sum(check_list, number):
 
 start = 25
 step = start
-part_1 = 0
 
 for position in range(start, len(inputs)):
     check_in = inputs[position-step:position]
