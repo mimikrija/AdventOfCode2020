@@ -11,11 +11,20 @@ def is_sum(check_list, number):
                 return True
     return False
 
-def yield_func(l):
+def sum_until(check_list):
     total = 0
-    for n in l:
-        yield total
-        total += n
+    for pos, num in enumerate(check_list):
+        yield total, pos
+        total += num
+
+def find_encryption_weakness(test_value):
+    current_sum = 0
+    list_to_test = sum_until(inputs[start_pos:])
+    while current_sum <= test_value:
+        current_sum, end_pos = next(list_to_test)
+        end_pos += start_pos
+        if current_sum == test_value:
+            return min(inputs[start_pos:end_pos]) + max(inputs[start_pos:end_pos])
 
 start = 25
 step = start
@@ -25,26 +34,14 @@ for position in range(start, len(inputs)):
     if not(is_sum(check_in, inputs[position])):
         part_1 = inputs[position]
         break
-import time
-a = time.time()*1000
 
-for position in range (0, len(inputs)):
-    test = 0
-    counter = position
-    new_list = yield_func(inputs[position:])
-    while test <= part_1:
-        test = next(new_list)
-        counter += 1 
-        if test == part_1:
-            break
-    if test == part_1:
-        print(position, test, counter, min(inputs[position:counter])+max(inputs[position:counter]))
+for start_pos in range (0, len(inputs)):
+    part_2 = find_encryption_weakness(part_1)
+    if part_2 != None:
         break
-b = time.time()*1000
-print(b-a)
 
 
 print(f'The first number that is not the sum of any two of the 25 numbers before it is {part_1}!')
-#print(f'The encryption weakness in my XMAS-encrypted list is: {part_2}!')
+print(f'The encryption weakness in my XMAS-encrypted list is: {part_2}!')
 # The first number that is not the sum of any two of the 25 numbers before it is 32321523!
 # The encryption weakness in my XMAS-encrypted list is: 4794981!
