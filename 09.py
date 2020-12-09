@@ -3,12 +3,6 @@ with open('inputs/09') as inputfile:
 
 inputs = [int(line.strip()) for line in inputs]
 
-
-start = 25
-end = len(inputs)-1
-step = start
-part_1 = 0
-
 def is_sum(check_list, number):
     for i, num1 in enumerate(check_list):
         for num2 in check_list[i+1:]:
@@ -16,7 +10,11 @@ def is_sum(check_list, number):
                 return True
     return False
 
-for position in range (start,len(inputs)):
+start = 25
+step = start
+part_1 = 0
+
+for position in range(start, len(inputs)):
     check_in = inputs[position-step:position]
     if not(is_sum(check_in, inputs[position])):
         part_1 = inputs[position]
@@ -25,8 +23,10 @@ for position in range (start,len(inputs)):
 print(part_1) # 32321523
 
 for position in range (0, len(inputs)):
-    for size in range (3,len(inputs)):
+    for size in range (3, len(inputs)):
+        # create a sublist of size 2+
         check_in = inputs[position:size]
+        # skip further creation of sublists:
         if sum(check_in) >= part_1:
             break
     if sum(check_in) == part_1:
