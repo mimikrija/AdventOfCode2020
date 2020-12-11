@@ -23,7 +23,6 @@ def is_seat_undesirable(input_configuration,row_pos,seat_pos):
             return True
     return False
 
-
 def update_configuration(input_configuration):
     output_configuration = copy.deepcopy(input_configuration)
     for row_pos in range(0, total_rows):
@@ -36,16 +35,17 @@ def update_configuration(input_configuration):
                 output_configuration[row_pos][seat_pos] = 'L'
     return output_configuration
 
+# parse input
 with open('inputs/11') as inputfile:
     rows = inputfile.readlines()
 
 seat_configuration = []
-
 for row in rows:
     row = row.strip()
-    row = [c for c in row ]
+    row = [c for c in row]
     seat_configuration.append(row)
 
+# get input dimensions
 total_rows = len(seat_configuration)
 total_seats = len(row)
 
@@ -63,4 +63,5 @@ for row in next_configuration:
     for seat in row:
         part_1 += seat == '#'
 
-print(part_1) # 2204
+print(f'The number of occupied seats is: {part_1}!')
+# The number of occupied seats is: 2204!
