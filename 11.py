@@ -50,6 +50,12 @@ total_rows = len(seat_configuration)
 total_seats = len(row)
 
 
+all_coordinates = {}
+for row_c, row in enumerate(seat_configuration):
+    for seat_c, seat in enumerate(row):
+        if seat != '.':
+            all_coordinates[(row_c,seat_c)] = seat
+
 next_configuration = []
 while True:
     next_configuration = update_configuration(seat_configuration)
