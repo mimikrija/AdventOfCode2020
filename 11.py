@@ -99,6 +99,37 @@ def update_configuration(input_configuration):
             output_configuration[position] = 'L'
     return output_configuration
 
+def is_seat_desirable_new_rule(input_configuration, position):
+    if input_configuration[position] != 'L':
+        return False
+    count = 0
+    checked_seats = 0
+    for check_position in visible_seats(input_configuration, position):
+        checked_seats += 1
+        count += input_configuration[check_position] == 'L'
+    return checked_seats == count
+
+def is_seat_undesirable_new_rule(input_configuration, position):
+    if input_configuration[position] != '#':
+        return False
+    count = 0
+    for check_position in visible_seats(input_configuration, position):
+        count += input_configuration[check_position] == '#'
+    if count >= 5:
+        return True
+    return False
+
+def update_configuration_new_rule(input_configuration):
+    output_configuration = input_configuration.copy()
+    for position, occupancy in input_configuration.items():
+        # take seat if desireable
+        if is_seat_desirable_new_rule(input_configuration, position):
+            output_configuration[position] = '#'
+        # leave seat if undesirable
+        if is_seat_undesirable_new_rule(input_configuration, position):
+            output_configuration[position] = 'L'
+    return output_configuration
+
 # parse input
 with open('inputs/11') as inputfile:
     rows = inputfile.readlines()
@@ -136,4 +167,21 @@ for occupancy in current_configuration.values():
     part_1 += occupancy == '#'
 
 print(f'The number of occupied seats is: {part_1}!')
+# The number of occupied seats is: 2204!
+
+current_configuration = all_coordinates.copy()
+#output_configuration = {}
+
+while True:
+    next_configuration = update_configuration_new_rule(current_configuration)
+    if next_configuration == current_configuration:
+        break
+    else:
+        current_configuration = next_configuration.copy()
+
+part_2 = 0
+for occupancy in current_configuration.values():
+    part_2 += occupancy == '#'
+
+print(f'The number of occupied seats following new rules is: {part_2}!')
 # The number of occupied seats is: 2204!
