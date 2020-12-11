@@ -10,17 +10,17 @@ def neighbours(position):
 def is_seat_desirable(input_configuration, position):
     count = 0
     checked_seats = 0
-    for position in neighbours(position):
-        if position in input_configuration:
+    for check_position in neighbours(position):
+        if check_position in input_configuration:
             checked_seats += 1
-            count += input_configuration[position] == 'L'
+            count += input_configuration[check_position] == 'L'
     return checked_seats == count
 
 def is_seat_undesirable(input_configuration, position):
     count = 0
-    for position in neighbours(position):
-        if position in input_configuration:
-            count += input_configuration[position] == '#'
+    for check_position in neighbours(position):
+        if check_position in input_configuration:
+            count += input_configuration[check_position] == '#'
         if count >= 4:
             return True
     return False
