@@ -122,19 +122,6 @@ def count_occupied_seats(input_configuration):
     counter = collections.Counter(input_configuration.values())
     return counter['#']
 
-
-with open('inputs/11') as inputfile:
-    inputs = inputfile.readlines()
-
-# get input dimensions
-total_rows, total_seats = len(inputs), len(inputs[0].strip())
-
-# parse input into a dictionary seat coordinates: seat ocupancy
-initial_configuration = {(row_num, seat_num): seat
-                        for row_num, row in enumerate(inputs)
-                        for seat_num, seat in enumerate(row.strip())
-                        if seat!='.'}
-
 def solve_day_11(puzzle_part, initial_configuration):
     # set initial conditions
     current_configuration = initial_configuration.copy()
@@ -152,6 +139,18 @@ def solve_day_11(puzzle_part, initial_configuration):
 
     print(f'The number of occupied seats in {puzzle_part} is: {count_occupied_seats(current_configuration)}!')
 
+
+with open('inputs/11') as inputfile:
+    inputs = inputfile.readlines()
+
+# get input dimensions
+total_rows, total_seats = len(inputs), len(inputs[0].strip())
+
+# parse input into a dictionary seat coordinates: seat ocupancy
+initial_configuration = {(row_num, seat_num): seat
+                        for row_num, row in enumerate(inputs)
+                        for seat_num, seat in enumerate(row.strip())
+                        if seat!='.'}
 
 solve_day_11('part 1', initial_configuration)
 solve_day_11('part 2', initial_configuration)
