@@ -5,11 +5,6 @@ UNIT_VECTOR = {
     'N': 0 + 1j
 }
 
-DIRECTION_FACTORS = {
-    'F': 1,
-    'B': -1
-}
-
 ROTATION = {
     'L': 1j,
     'R': -1j
@@ -28,7 +23,11 @@ instructions = [(instruction[0], int(instruction[1:])) for instruction in instru
 
 current_location = 0 + 0j
 ship_direction = UNIT_VECTOR['E']
-
+def move_it(command, by_amount):
+    # move the ship in absolute (E, S, W, or N) direction by amount
+    if command in UNIT_VECTOR:
+        return UNIT_VECTOR[command] * by_amount
+    return 0 + 0j
 # part 1
 for command, amount in instructions:
 
@@ -37,13 +36,12 @@ for command, amount in instructions:
         for _ in range (amount//90):
             ship_direction *= ROTATION[command]
 
-    # move the ship backward or forward (B, F) in the ship_direction by amount
-    if command in DIRECTION_FACTORS.keys():
-        current_location += DIRECTION_FACTORS[command] * ship_direction * amount
+    # move the ship backward or forward (F) in the ship_direction by amount
+    if command == 'F':
+        current_location += ship_direction * amount
 
     # move the ship in absolute (E, S, W, or N) direction by amount
-    if command in UNIT_VECTOR:
-        current_location += UNIT_VECTOR[command] * amount
+    current_location += move_it(command, amount)
 
 print(f'Ship distance after following all the instructions is: {manhattan_distance(current_location)}!')
 # Ship distance after following all the instructions is: 858!
@@ -63,8 +61,7 @@ for command, amount in instructions:
             waypoint *= ROTATION[command]
 
     # move the waypoint in absolute (E, S, W, or N) direction by amount
-    if command in UNIT_VECTOR:
-        waypoint += UNIT_VECTOR[command] * amount
+    waypoint += move_it(command, amount)
 
     # move the in the waypoint direction by amount
     if command == 'F':
