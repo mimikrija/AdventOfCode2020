@@ -9,31 +9,6 @@ def neighbours(input_configuration, position):
         if (check_row != row_pos or check_seat != seat_pos)
         and (check_row, check_seat) in input_configuration.keys()]
 
-def visible_seats(input_configuration, position):
-    """ returns a list of all seats coordinates visible from `position` in `input_configuration` """
-
-    visible = []
-    INCREMENTS = {
-        'up': (-1, 0),
-        'down': (1, 0),
-        'left': (0, -1),
-        'right': (0, 1),
-        'u-l': (-1, -1),
-        'u-r': (-1, 1),
-        'd-l': (1, -1),
-        'd-r': (1, 1)
-    }
-
-    for (dx, dy) in INCREMENTS.values():
-        check_row, check_seat = position
-        while check_row in range (0, total_rows) and check_seat in range (0, total_seats):
-            check_row += dx
-            check_seat += dy
-            if (check_row, check_seat) in input_configuration.keys():
-                visible.append((check_row, check_seat))
-                break
-    return visible
-
 def is_seat_desirable(input_configuration, position):
     """ checks whether a seat in `position` in `input_configuration` is desirable
      given the rules from part 1: all neighbouring seats must be empty """
@@ -75,6 +50,31 @@ def update_configuration(input_configuration):
         if is_seat_undesirable(input_configuration, position):
             output_configuration[position] = 'L'
     return output_configuration
+
+def visible_seats(input_configuration, position):
+    """ returns a list of all seats coordinates visible from `position` in `input_configuration` """
+
+    visible = []
+    INCREMENTS = {
+        'up': (-1, 0),
+        'down': (1, 0),
+        'left': (0, -1),
+        'right': (0, 1),
+        'u-l': (-1, -1),
+        'u-r': (-1, 1),
+        'd-l': (1, -1),
+        'd-r': (1, 1)
+    }
+
+    for (dx, dy) in INCREMENTS.values():
+        check_row, check_seat = position
+        while check_row in range (0, total_rows) and check_seat in range (0, total_seats):
+            check_row += dx
+            check_seat += dy
+            if (check_row, check_seat) in input_configuration.keys():
+                visible.append((check_row, check_seat))
+                break
+    return visible
 
 def is_seat_desirable_new_rule(input_configuration, position):
     """ checks whether a seat in `position` in `input_configuration` is desirable
