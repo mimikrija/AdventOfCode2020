@@ -1,6 +1,8 @@
 import copy
 
 def neighbours(input_configuration, position):
+    """ returns a list of coordinates of all immediate neighbors of `position` in `input_configuration`"""
+
     row_pos, seat_pos = position
     return [(check_row, check_seat)
         for check_row in range (row_pos-1, row_pos + 2) for check_seat in range (seat_pos-1, seat_pos+2)
@@ -8,6 +10,8 @@ def neighbours(input_configuration, position):
         and (check_row, check_seat) in input_configuration.keys()]
 
 def visible_seats(input_configuration, position):
+    """ returns a list of all seats coordinates visible from `position` in `input_configuration` """
+
     visible = []
     INCREMENTS = {
         'up': (-1, 0),
@@ -31,6 +35,10 @@ def visible_seats(input_configuration, position):
     return visible
 
 def is_seat_desirable(input_configuration, position):
+    """ checks whether a seat in `position` in `input_configuration` is desirable
+     given the rules from part 1: all neighbouring seats must be empty """
+
+    # seat is not even available, return
     if input_configuration[position] != 'L':
         return False
     count = 0
@@ -41,6 +49,10 @@ def is_seat_desirable(input_configuration, position):
     return checked_seats == count
 
 def is_seat_undesirable(input_configuration, position):
+    """ checks whether a seat in `position` in `input_configuration` is no longer
+    desirable given the rules from part 1: at least 4 neighbouring seats must be occupied """
+
+    # seat is not even occupied, return
     if input_configuration[position] != '#':
         return False
     count = 0
@@ -51,6 +63,9 @@ def is_seat_undesirable(input_configuration, position):
     return False
 
 def update_configuration(input_configuration):
+    """ updates `input_configuration` following rules from part 1
+    and returns new configuration as `output_configuration` """
+
     output_configuration = input_configuration.copy()
     for position, occupancy in input_configuration.items():
         # take seat if desireable
@@ -62,6 +77,10 @@ def update_configuration(input_configuration):
     return output_configuration
 
 def is_seat_desirable_new_rule(input_configuration, position):
+    """ checks whether a seat in `position` in `input_configuration` is desirable
+     given the rules from part 2: all seats visible from it must be empty """
+
+    # seat is not even available, return
     if input_configuration[position] != 'L':
         return False
     count = 0
@@ -72,6 +91,10 @@ def is_seat_desirable_new_rule(input_configuration, position):
     return checked_seats == count
 
 def is_seat_undesirable_new_rule(input_configuration, position):
+    """ checks whether a seat in `position` in `input_configuration` is no longer
+    desirable given the rules from part 2: at least 5 seats visible from it must be occupied """
+
+    # seat is not even occupied, return
     if input_configuration[position] != '#':
         return False
     count = 0
@@ -82,6 +105,8 @@ def is_seat_undesirable_new_rule(input_configuration, position):
     return False
 
 def update_configuration_new_rule(input_configuration):
+    """ updates `input_configuration` following rules from part 2
+    and returns new configuration as `output_configuration` """
     output_configuration = input_configuration.copy()
     for position, occupancy in input_configuration.items():
         # take seat if desireable
