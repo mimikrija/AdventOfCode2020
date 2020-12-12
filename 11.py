@@ -122,29 +122,22 @@ def count_occupied_seats(input_configuration):
     counter = collections.Counter(input_configuration.values())
     return counter['#']
 
-# parse input
-with open('inputs/11') as inputfile:
-    rows = inputfile.readlines()
 
-seat_configuration = []
-for row in rows:
-    row = row.strip()
-    row = [c for c in row]
-    seat_configuration.append(row)
+with open('inputs/11') as inputfile:
+    inputs = inputfile.readlines()
 
 # get input dimensions
-total_rows = len(seat_configuration)
-total_seats = len(row)
+total_rows, total_seats = len(inputs), len(inputs[0].strip())
 
-all_coordinates = {}
-for row_c, row in enumerate(seat_configuration):
-    for seat_c, seat in enumerate(row):
-        if seat != '.':
-            all_coordinates[(row_c,seat_c)] = seat
+# parse input into a dictionary seat coordinates: seat ocupancy
+initial_configuration = {(row_num, seat_num): seat
+                        for row_num, row in enumerate(inputs)
+                        for seat_num, seat in enumerate(row.strip())
+                        if seat!='.'}
 
-def solve_day_11(puzzle_part, all_coordinates):
+def solve_day_11(puzzle_part, initial_configuration):
     # set initial conditions
-    current_configuration = all_coordinates.copy()
+    current_configuration = initial_configuration.copy()
 
     # keep updating configurations until two consecutive configurations match
     while True:
@@ -160,7 +153,7 @@ def solve_day_11(puzzle_part, all_coordinates):
     print(f'The number of occupied seats in {puzzle_part} is: {count_occupied_seats(current_configuration)}!')
 
 
-solve_day_11('part 1', all_coordinates)
-solve_day_11('part 2', all_coordinates)
+solve_day_11('part 1', initial_configuration)
+solve_day_11('part 2', initial_configuration)
 # The number of occupied seats in part 1 is: 2204!
 # The number of occupied seats in part 2 is: 1986!
