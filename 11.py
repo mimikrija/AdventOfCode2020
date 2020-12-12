@@ -9,7 +9,6 @@ def neighbours(input_configuration, position):
 
 def visible_seats(input_configuration, position):
     visible = []
-    row_pos, seat_pos = position
     INCREMENTS = {
         'up': (-1, 0),
         'down': (1, 0),
@@ -22,73 +21,13 @@ def visible_seats(input_configuration, position):
     }
 
     for (dx, dy) in INCREMENTS.values():
-        check_position = (row_pos, seat_pos)
-        for _ in range (100):
-            check_position = (row_pos + dx, seat_pos + dy)
-            if check_position in input_configuration.keys():
-                visible.append(check_position)
+        check_row, check_seat = position
+        while check_row in range (0, total_rows) and check_seat in range (0, total_seats):
+            check_row += dx
+            check_seat += dy
+            if (check_row, check_seat) in input_configuration.keys():
+                visible.append((check_row, check_seat))
                 break
-            if check_position[0] not in range(0, total_rows) or check_position[1] not in range(0, total_seats):
-                print('helo', check_position)
-                break
-    return visible
-
-    # up
-    for up in range(row_pos - 1, -1, -1):
-        check_position = (up, seat_pos)
-        if check_position in input_configuration.keys():
-            visible.append(check_position)
-            break
-
-    # left
-    for up in range(seat_pos - 1, -1, -1):
-        check_position = (row_pos, up)
-        if check_position in input_configuration.keys():
-            visible.append(check_position)
-            break
-
-    # down
-    for up in range(row_pos + 1, total_rows):
-        check_position = (up, seat_pos)
-        if check_position in input_configuration.keys():
-            visible.append(check_position)
-            break
-
-    # right
-    for up in range(seat_pos + 1, total_seats):
-        check_position = (row_pos, up)
-        if check_position in input_configuration.keys():
-            visible.append(check_position)
-            break
-    
-    # up left diagonal
-    for x, y in zip( range(row_pos - 1, -1, -1), range(seat_pos - 1, -1, -1)):
-        check_position = (x, y)
-        if check_position in input_configuration.keys():
-            visible.append(check_position)
-            break
-
-    # up right diagonal
-    for x, y in zip( range(row_pos - 1, -1, -1), range(seat_pos + 1, total_seats)):
-        check_position = (x, y)
-        if check_position in input_configuration.keys():
-            visible.append(check_position)
-            break
-
-    # down left diagonal
-    for x, y in zip( range(row_pos + 1, total_rows), range(seat_pos - 1, -1, -1)):
-        check_position = (x, y)
-        if check_position in input_configuration.keys():
-            visible.append(check_position)
-            break
-
-    # down right diagonal
-    for x, y in zip( range(row_pos + 1, total_rows), range(seat_pos + 1, total_seats)):
-        check_position = (x, y)
-        if check_position in input_configuration.keys():
-            visible.append(check_position)
-            break
-
     return visible
 
 def is_seat_desirable(input_configuration, position):
