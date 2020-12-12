@@ -10,6 +10,29 @@ def neighbours(input_configuration, position):
 def visible_seats(input_configuration, position):
     visible = []
     row_pos, seat_pos = position
+    INCREMENTS = {
+        'up': (-1, 0),
+        'down': (1, 0),
+        'left': (0, -1),
+        'right': (0, 1),
+        'u-l': (-1, -1),
+        'u-r': (-1, 1),
+        'd-l': (1, -1),
+        'd-r': (1, 1)
+    }
+
+    for (dx, dy) in INCREMENTS.values():
+        check_position = (row_pos, seat_pos)
+        for _ in range (100):
+            check_position = (row_pos + dx, seat_pos + dy)
+            if check_position in input_configuration.keys():
+                visible.append(check_position)
+                break
+            if check_position[0] not in range(0, total_rows) or check_position[1] not in range(0, total_seats):
+                print('helo', check_position)
+                break
+    return visible
+
     # up
     for up in range(row_pos - 1, -1, -1):
         check_position = (up, seat_pos)
@@ -131,7 +154,7 @@ def update_configuration_new_rule(input_configuration):
     return output_configuration
 
 # parse input
-with open('inputs/11') as inputfile:
+with open('inputs/11-ex') as inputfile:
     rows = inputfile.readlines()
 
 seat_configuration = []
@@ -149,7 +172,6 @@ for row_c, row in enumerate(seat_configuration):
     for seat_c, seat in enumerate(row):
         if seat != '.':
             all_coordinates[(row_c,seat_c)] = seat
-
 
 
 current_configuration = all_coordinates.copy()
@@ -184,4 +206,4 @@ for occupancy in current_configuration.values():
     part_2 += occupancy == '#'
 
 print(f'The number of occupied seats following new rules is: {part_2}!')
-# The number of occupied seats is: 2204!
+# The number of occupied seats following new rules is: 1986!
