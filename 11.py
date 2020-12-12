@@ -1,4 +1,5 @@
 import copy
+import collections
 
 def neighbours(input_configuration, position):
     """ returns a list of coordinates of all immediate neighbors of `position` in `input_configuration`"""
@@ -117,8 +118,12 @@ def update_configuration_new_rule(input_configuration):
             output_configuration[position] = 'L'
     return output_configuration
 
+def count_occupied_seats(input_configuration):
+    counter = collections.Counter(input_configuration.values())
+    return counter['#']
+
 # parse input
-with open('inputs/11-ex') as inputfile:
+with open('inputs/11') as inputfile:
     rows = inputfile.readlines()
 
 seat_configuration = []
@@ -137,37 +142,25 @@ for row_c, row in enumerate(seat_configuration):
         if seat != '.':
             all_coordinates[(row_c,seat_c)] = seat
 
+def solve_day_11(puzzle_part, all_coordinates):
+    # set initial conditions
+    current_configuration = all_coordinates.copy()
 
-current_configuration = all_coordinates.copy()
-#output_configuration = {}
+    # keep updating configurations until two consecutive configurations match
+    while True:
+        if puzzle_part == 'part 1':
+            next_configuration = update_configuration(current_configuration)
+        if puzzle_part == 'part 2':
+            next_configuration = update_configuration_new_rule(current_configuration)
+        if next_configuration == current_configuration:
+            break
+        else:
+            current_configuration = next_configuration.copy()
 
-while True:
-    next_configuration = update_configuration(current_configuration)
-    if next_configuration == current_configuration:
-        break
-    else:
-        current_configuration = next_configuration.copy()
+    print(f'The number of occupied seats in {puzzle_part} is: {count_occupied_seats(current_configuration)}!')
 
-part_1 = 0
-for occupancy in current_configuration.values():
-    part_1 += occupancy == '#'
 
-print(f'The number of occupied seats is: {part_1}!')
-# The number of occupied seats is: 2204!
-
-current_configuration = all_coordinates.copy()
-#output_configuration = {}
-
-while True:
-    next_configuration = update_configuration_new_rule(current_configuration)
-    if next_configuration == current_configuration:
-        break
-    else:
-        current_configuration = next_configuration.copy()
-
-part_2 = 0
-for occupancy in current_configuration.values():
-    part_2 += occupancy == '#'
-
-print(f'The number of occupied seats following new rules is: {part_2}!')
-# The number of occupied seats following new rules is: 1986!
+solve_day_11('part 1', all_coordinates)
+solve_day_11('part 2', all_coordinates)
+# The number of occupied seats in part 1 is: 2204!
+# The number of occupied seats in part 2 is: 1986!
