@@ -73,7 +73,7 @@ for mask, memory_stuff in program_instructions:
         # fill a single memory slot with whatever value we get after applying the bitmask
         program_memory[memory_address] = apply_bitmask(mask, value)
 
-part_1 = sum(list(program_memory.values()))
+part_1 = sum(program_memory.values())
 
 print(f'The sum of all values in memory after the program completes is {part_1}! {part_1 == 13727901897109}' ) # 13727901897109
 
