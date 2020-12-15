@@ -1,29 +1,30 @@
-from collections import deque
 starting_numbers = open('inputs/15').read().split(',')
 starting_numbers = [int(num) for num in starting_numbers]
 
 
-def play_the_elves_game(selected):
-    # initialize dictionary of numbers with last two positions in the game
-    rounds = max(selected)
+def play_the_elves_game(selected_turns):
+    rounds = max(selected_turns)
+
+    # initialize dictionary of numbers with last two turns in the game they were said
     game_numbers = {num: (n + 1, n + 1) for n, num in enumerate(starting_numbers)}
-    next_num = 0
-    turn = len(game_numbers) + 1
-    while turn <= rounds:
-        if next_num in game_numbers.keys():
-            positions = game_numbers[next_num]
-            diff = positions[1] - positions[0]
+    last_said_number = starting_numbers[-1]
+    current_turn = len(game_numbers) + 1
+
+    while current_turn <= rounds:
+        # select the next number to be said
+        say_next = game_numbers[last_said_number][1] - game_numbers[last_said_number][0]
+        # update last two turns when the number was said
+        if say_next in game_numbers.keys():
+            next_to_last_turn, last_turn = game_numbers[say_next]
+            last_two_turns = (last_turn, current_turn)
         else:
-            diff = 0
-        if diff in game_numbers.keys():
-            last = game_numbers[diff][1]
-        else:
-            last = turn
-        game_numbers[diff] = ( last ,turn)
-        next_num = diff
-        if turn in selected:
-             print(f'...after {turn} rounds is: {next_num}!')
-        turn += 1
+            last_two_turns = (current_turn, current_turn)
+        # say the number!
+        game_numbers[say_next] = last_two_turns
+        last_said_number = say_next
+        if current_turn in selected_turns:
+             print(f'...after {current_turn} rounds is: {last_said_number}!')
+        current_turn += 1
     return
 
 
