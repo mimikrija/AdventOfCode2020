@@ -43,30 +43,31 @@ valid_tickets = [ticket for ticket in other_tickets
 
 # generate lists which contain all first, all second, etc. fields of all tickets
 num_of_fields = len(rules)
-all_fields = { n: [ticket[n] for ticket in valid_tickets] for n in range(0, num_of_fields) }
+all_fields = {n: [ticket[n] for ticket in valid_tickets] for n in range(0, num_of_fields)}
 
-# get all fields which satisfy rule(s)
-possible_matches = { name: [] for name in all_fields.keys() }
+# dictionary of all possible matches, field: all_matched_categories
+possible_matches = {field: [] for field in all_fields.keys()}
 for category, rule in rules.items():
     for field, field_values in all_fields.items():
         if sum([invalid_value([rule], field_value) for field_value in field_values]) == 0:
             possible_matches[field].append(category)
 
 
-def find_unique(in_possible):
-    """ removes unique match from the `in_possible` and returns `matched_category` and `field`"""
+def match_fields(in_possible):
+    """ removes unique match from `in_possible` and returns `matched_category` and `field`"""
     for field, possible_categories in in_possible.items():
         if len(possible_categories) == 1:
             matched_category = in_possible.pop(field)[0]
             for name, cat_list in in_possible.items():
-                new_cat_list = cat_list
-                new_cat_list.remove(possible_categories[0])
-                in_possible[name] = new_cat_list
+                #new_cat_list = cat_list
+                cat_list.remove(possible_categories[0])
+                in_possible[name] = cat_list
             return matched_category, field
 
+# do find_unique until we match all the fields
 final_match = {}
 while True:
-    category, field = find_unique(possible_matches)
+    category, field = match_fields(possible_matches)
     final_match[category] = field
     if len(final_match) == len(rules):
         break
@@ -76,4 +77,4 @@ for category, position in final_match.items():
     if 'departure' in category:
         part_2 *= my_ticket[position]
 
-print(part_2) #589685618167
+print(part_2==589685618167) #589685618167
