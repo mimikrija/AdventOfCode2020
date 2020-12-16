@@ -40,3 +40,17 @@ print(f'The sum of all invalid values is {part_1}!')
 # discard invalid tickets:
 valid_tickets = [ticket for ticket in other_tickets
                 if sum([invalid_value(rules.values(), ticket_value) for ticket_value in ticket]) == 0]
+
+# generate lists which contain all first, all second, etc. fields of all tickets
+num_of_fields = len(rules)
+all_fields = {}
+all_fields = { 'field ' + str(n): [ticket[n-1] for ticket in valid_tickets] for n in range(1, num_of_fields + 1) }
+
+# get all fields which satisfy rule(s)
+possible_matches = { name: [] for name in all_fields.keys() }
+for category, rule in rules.items():
+    for field_name, field_values in all_fields.items():
+        if sum([invalid_value([rule], field_value) for field_value in field_values]) == 0:
+            possible_matches[field_name].append(category)
+
+
