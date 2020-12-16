@@ -34,9 +34,6 @@ other_tickets_input = [re.findall(re_digits,ticket) for ticket in other_tickets_
 other_tickets = [[int(num) for num in ticket] for ticket in other_tickets_input]
 
 
-part_1 = 0
-for ticket in other_tickets:
-    for ticket_value in ticket:
-            part_1 += invalid_value(rules.values(), ticket_value)
+part_1 = sum([invalid_value(rules.values(),ticket_value) for ticket in other_tickets for ticket_value in ticket]) # 26009
+print(f'The sum of all invalid values is {part_1}!')
 
-print(part_1)
