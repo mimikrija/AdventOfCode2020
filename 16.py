@@ -5,7 +5,7 @@ def invalid_value(rules, ticket_field):
     is_invalid = True
     for rule in rules:
         l_1, u_1, l_2, u_2 = rule
-        is_invalid &= ticket_field not in range(l_1, u_1 + 1) and ticket_field not in range(l_2, u_2 + 1)
+        is_invalid &= not(ticket_field in range(l_1, u_1 + 1) or ticket_field in range(l_2, u_2 + 1))
     if is_invalid:
         return ticket_field
     else:
