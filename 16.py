@@ -45,12 +45,12 @@ valid_tickets = [ticket for ticket in other_tickets
 
 # generate lists which contain all first, all second, etc. fields of all tickets
 num_of_fields = len(rules)
-all_fields = {n: [ticket[n] for ticket in valid_tickets] for n in range(0, num_of_fields)}
+all_values_per_field = {n: [ticket[n] for ticket in valid_tickets] for n in range(0, num_of_fields)}
 
 # dictionary of all possible matches, field: all_matched_categories
-possible_matches = {field: [] for field in all_fields.keys()}
+possible_matches = {field: [] for field in all_values_per_field.keys()}
 for category, rule in rules.items():
-    for field, field_values in all_fields.items():
+    for field, field_values in all_values_per_field.items():
         if sum([invalid_value([rule], field_value) for field_value in field_values]) == 0:
             possible_matches[field].append(category)
 
