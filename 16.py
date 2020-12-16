@@ -77,4 +77,5 @@ for category, position in final_match.items():
     if 'departure' in category:
         part_2 *= my_ticket[position]
 
-print(part_2==589685618167) #589685618167
+print(f'The sum of product of all ticket fields containing the word "departure" is {part_2}!')
+# The sum of product of all ticket fields containing the word "departure" is 589685618167!
