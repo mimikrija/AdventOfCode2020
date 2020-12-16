@@ -4,8 +4,7 @@ def invalid_value(rules, ticket_field):
     """if present, returns invalid ticket field"""
     is_invalid = True
     for rule in rules:
-        l_1, u_1, l_2, u_2 = rule
-        is_invalid &= not(ticket_field in range(l_1, u_1 + 1) or ticket_field in range(l_2, u_2 + 1))
+        is_invalid &= ticket_field not in rule
     if is_invalid:
         return ticket_field
     else:
@@ -20,9 +19,11 @@ re_words = re.compile(r'[a-z]+\s*[a-z]*')
 tickets_input = open('inputs/16').read().split('\n\n')
 # get rules (first block) into a dictionary category: ranges
 rules_input = tickets_input[0].split('\n')
-rules = {re.findall(re_words,rule)[0]: re.findall(re_digits, rule) for rule in rules_input}
+rules = {re.findall(re_words,rule)[0]: (int(num) for num in re.findall(re_digits, rule)) for rule in rules_input}
 for category, ranges in rules.items():
-    rules[category] = [int(num) for num in ranges]
+    low, mid_l, mid_h, high = ranges
+    rule_range = set(range(low, high+1)).difference(range(mid_l+1, mid_h))
+    rules[category] = rule_range
 
 # read and parse my ticket (second block)
 my_ticket = re.findall(re_digits, tickets_input[1])
