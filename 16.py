@@ -35,14 +35,14 @@ other_tickets_input = [re.findall(re_digits,ticket) for ticket in other_tickets_
 other_tickets = [[int(num) for num in ticket] for ticket in other_tickets_input]
 
 
-part_1 = sum([invalid_value(rules.values(),ticket_value) for ticket in other_tickets for ticket_value in ticket])
+part_1 = sum(invalid_value(rules.values(),ticket_value) for ticket in other_tickets for ticket_value in ticket)
 print(f'The sum of all invalid values is {part_1}!')
 # The sum of all invalid values is 26009!
 
 
 # discard invalid tickets:
 valid_tickets = [ticket for ticket in other_tickets
-                if sum([invalid_value(rules.values(), ticket_value) for ticket_value in ticket]) == 0]
+                if sum(invalid_value(rules.values(), ticket_value) for ticket_value in ticket) == 0]
 
 # generate lists which contain all first, all second, etc. fields of all tickets
 num_of_fields = len(rules)
@@ -52,7 +52,7 @@ all_values_per_field = {n: [ticket[n] for ticket in valid_tickets] for n in rang
 possible_matches = {field: [] for field in all_values_per_field.keys()}
 for category, rule in rules.items():
     for field, field_values in all_values_per_field.items():
-        if sum([invalid_value([rule], field_value) for field_value in field_values]) == 0:
+        if sum(invalid_value([rule], field_value) for field_value in field_values) == 0:
             possible_matches[field].append(category)
 
 
