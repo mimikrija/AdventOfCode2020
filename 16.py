@@ -12,7 +12,7 @@ def invalid_value(rules, ticket_field):
         return 0
 
 re_digits = re.compile(r'\d+')
-re_words = re.compile(r'\w+')
+re_words = re.compile(r'[a-z]+\s*[a-z]*')
 
 # parse input
 # read & parse input
