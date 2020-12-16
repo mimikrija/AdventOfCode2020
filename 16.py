@@ -17,7 +17,7 @@ re_words = re.compile(r'\w+')
 # parse input
 # read & parse input
 # read data in bulks split by \n\n
-tickets_input = open('inputs/16-ex').read().split('\n\n')
+tickets_input = open('inputs/16').read().split('\n\n')
 # get rules (first block) into a dictionary category: ranges
 rules_input = tickets_input[0].split('\n')
 rules = {re.findall(re_words,rule)[0]: re.findall(re_digits, rule) for rule in rules_input}
@@ -34,8 +34,9 @@ other_tickets_input = [re.findall(re_digits,ticket) for ticket in other_tickets_
 other_tickets = [[int(num) for num in ticket] for ticket in other_tickets_input]
 
 
-# part_1 = 0
-# for ticket_value in ticket:
-#         part_1 += invalid_value(rules, ticket_value)
+part_1 = 0
+for ticket in other_tickets:
+    for ticket_value in ticket:
+            part_1 += invalid_value(rules.values(), ticket_value)
 
-# print(part_1)
+print(part_1)
