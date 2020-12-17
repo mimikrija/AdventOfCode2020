@@ -1,7 +1,7 @@
 import re
 import math
 
-with open('inputs/13') as inputfile:
+with open('inputs/13-ex') as inputfile:
     inputs = inputfile.readlines()
 
 digits = re.compile(r'[0-9]+')
@@ -32,6 +32,28 @@ time_diffs = [ n for n, c in enumerate(input_line_two) if c != 'x']
 
 print(time_diffs)
 print(bus_IDs)
+
+def first_overlap_and_period(bus_1, diff_1, bus_2, diff_2):
+    for time in range (bus_1, bus_1*bus_2+1):
+        if (time + diff_1) % bus_1 == 0 and (time + diff_2) % bus_2 == 0:
+            return (time, bus_1*bus_2)
+
+print(first_overlap_and_period(7, 13, 0, 1))
+
+diff = time_diffs[0]
+num = bus_IDs[0]
+for n in range(1,len(bus_IDs)):
+    print(num, diff, bus_IDs[n], time_diffs[n])
+    num, diff = first_overlap_and_period(num, diff, bus_IDs[n], time_diffs[n])
+    print(num, diff)
+    
+
+
+
+quit()
+        
+
+
 
 def chinese_remainder(numbers, remainders):
     result = 0
