@@ -1,6 +1,7 @@
 import re
+import math
 
-with open('inputs/13-ex') as inputfile:
+with open('inputs/13') as inputfile:
     inputs = inputfile.readlines()
 
 digits = re.compile(r'[0-9]+')
@@ -32,10 +33,23 @@ time_diffs = [ n for n, c in enumerate(input_line_two) if c != 'x']
 print(time_diffs)
 print(bus_IDs)
 
-buses_and_increments = zip(time_diffs, bus_IDs)
-#print(list(buses_and_increments))
-print(time_diffs)
-print(bus_IDs)
+def chinese_remainder(numbers, remainders):
+    result = 0
+    product = math.prod(numbers)
+    prod_div_by_reminders = [product // remainder for remainder in remainders]
+    mod_mult_inverse = [(prod_div_by_reminders[n] * remainders[n])%numbers[n]
+            for n in range(len(numbers))]
+    for n in range(len(numbers)):
+        result+= (remainders[n]*prod_div_by_reminders[n]*mod_mult_inverse[n])
+    return result%product
 
-for n, pair in enumerate(buses_and_increments):
-    print (pair)
+part2 = chinese_remainder(bus_IDs[1:],time_diffs[1:])
+print(part2) # 30309578578160 not correct
+print(part2%29)
+for n,r in list(zip(bus_IDs,time_diffs)):
+    if n != 0:
+        print(n, part2%int(n),r)
+print((part2*9)%443)
+
+
+# 181857471544305 not correct
