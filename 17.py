@@ -56,4 +56,13 @@ initial_configuration = {(row_num, column_num, 0): column
                         for column_num, column in enumerate(row.strip())
                         }
 
+previous_configuration = initial_configuration.copy()
 
+for _ in range (6):
+    current_configuration = widen_the_map(previous_configuration)
+    current_configuration = de_acitivation(current_configuration)
+    previous_configuration = current_configuration.copy()
+
+part_1 = Counter(current_configuration.values())['#']
+print(f'Number of active cells after 6 cycles is: {part_1}!')
+# Number of active cells after 6 cycles is: 346!
