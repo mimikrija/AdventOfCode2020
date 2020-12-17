@@ -39,7 +39,7 @@ def de_acitivation(in_positions):
     positions = in_positions.copy()
     for cube in in_positions:
         # active becomes inactive
-        if in_positions.get(cube, '.') == '#' and count_neighbors(cube, in_positions) in {2, 3}:
+        if in_positions.get(cube, '.') == '#' and count_neighbors(cube, in_positions) not in {2, 3}:
             positions[cube] = '.'
         # inactive becomes active
         else:
