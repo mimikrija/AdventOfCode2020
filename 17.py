@@ -20,4 +20,12 @@ def de_acitivation(cube, positions):
         positions[cube] = '#'
 
 
+with open('inputs/17-ex') as inputfile:
+    inputs = inputfile.readlines()
+
+# parse input into a dictionary of cube coordinates (z is initialized to 0)
+initial_configuration = {(row_num, column_num, 0): column
+                        for row_num, row in enumerate(inputs)
+                        for column_num, column in enumerate(row.strip())
+                        if column != '.'}
 
