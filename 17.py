@@ -11,14 +11,16 @@ def count_neighbors(cube, positions):
     return counter
 
 
-def de_acitivation(cube, in_positions):
+def de_acitivation(in_positions):
     positions = in_positions.copy()
-    # inactive becomes active
-    if positions.get(cube, '.') == '#' and count_neighbors(cube, positions) in {2, 3}:
-        positions[cube] = '.'
-    # active becomes inactive
-    if positions.get(cube, '.') == '.' and count_neighbors(cube, positions) == 3:
-        positions[cube] = '#'
+    for cube in in_positions:
+        # active becomes inactive
+        if in_positions.get(cube, '.') == '#' and count_neighbors(cube, in_positions) in {2, 3}:
+            positions[cube] = '.'
+        # inactive becomes active
+        else:
+            if in_positions.get(cube, '.') == '.' and count_neighbors(cube, in_positions) == 3:
+                positions[cube] = '#'
     return positions
 
 
