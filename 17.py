@@ -47,6 +47,13 @@ def de_acitivation(in_positions):
                 positions[cube] = '#'
     return positions
 
+def purge_the_map(in_positions):
+    out_positions= {}
+    for cube, occupancy in in_positions.items():
+        if occupancy != '.':
+            out_positions[cube] = '#'
+    return out_positions
+
 with open('inputs/17') as inputfile:
     inputs = inputfile.readlines()
 
@@ -54,17 +61,17 @@ with open('inputs/17') as inputfile:
 initial_configuration = {(row_num, column_num, 0): column
                         for row_num, row in enumerate(inputs)
                         for column_num, column in enumerate(row.strip())
-                        }
+                        if column != '.'}
 
 previous_configuration = initial_configuration.copy()
-
-for _ in range (6):
+for n in range (6):
     current_configuration = widen_the_map(previous_configuration)
     current_configuration = de_acitivation(current_configuration)
+    current_configuration = purge_the_map(current_configuration)
     previous_configuration = current_configuration.copy()
 
 part_1 = Counter(current_configuration.values())['#']
-print(f'Number of active cells after 6 cycles is: {part_1}!')
+print(f'Number of active cells after {n+1} cycles is: {part_1}!')
 # Number of active cells after 6 cycles is: 346!
 
 
@@ -124,22 +131,16 @@ with open('inputs/17') as inputfile:
 initial_configuration = {(row_num, column_num, 0, 0): column
                         for row_num, row in enumerate(inputs)
                         for column_num, column in enumerate(row.strip())
-                        }
-#print(initial_configuration)
+                        if column != '.'}
+
 previous_configuration = initial_configuration.copy()
-import time
 for n in range (6):
-    start = time.time()
     current_configuration = widen_the_map(previous_configuration)
     current_configuration = de_acitivation(current_configuration)
+    current_configuration = purge_the_map(current_configuration)
     previous_configuration = current_configuration.copy()
     part_2 = Counter(current_configuration.values())['#']
-    end = time.time()
-    print(f'Number of active cells after {n+1} cycles is: {part_1} Time needed = {1000*(end-start)}!')
 
-# Number of active cells after 1 cycles is: 170 Time needed = 31.981468200683594!
-# Number of active cells after 2 cycles is: 174 Time needed = 320.8167552947998!
-# Number of active cells after 3 cycles is: 816 Time needed = 2351.656436920166!
-# Number of active cells after 4 cycles is: 508 Time needed = 14296.834707260132!
-# Number of active cells after 5 cycles is: 2100 Time needed = 104869.29035186768!
-# Number of active cells after 6 cycles is: 1632 Time needed = 285671.8304157257!
+print(f'Number of active cells after {n+1} cycles is: {part_2}!')
+# Number of active cells after 6 cycles is: 1632!
+# Time needed = 7.761 s
