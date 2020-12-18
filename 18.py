@@ -1,7 +1,7 @@
 import re
 from collections import deque
 
-with open('inputs/18-ex') as inputfile:
+with open('inputs/18') as inputfile:
     inputs = inputfile.readlines()
 
 re_math = re.compile(r'[0-9+*()]')
@@ -29,6 +29,8 @@ def get_rid_of_brackets(in_list):
         in_list = in_list[:pos_1] + [get_rid_of_brackets(in_list[pos_1+1:pos_2])] + in_list[pos_2+1:]
     return (calculate_list(in_list))
 
+part_1 = 0
 for operation in operations:
-    print(operation)
-    print(get_rid_of_brackets(operation))
+    part_1 += int(get_rid_of_brackets(operation))
+
+print(part_1) # 8929569623593
