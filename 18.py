@@ -7,7 +7,7 @@ with open('inputs/18') as inputfile:
 re_math = re.compile(r'[0-9+*()]')
 operations = [ re.findall(re_math, line) for line in inputs]
 
-def calculate_list(in_list):
+def calculate_list(in_list): 
     if len(in_list) == 1:
         result = in_list[0]
     while len(in_list) >= 3:
@@ -16,7 +16,7 @@ def calculate_list(in_list):
             operation += c
         result = eval(operation)
         in_list = [str(result)] + in_list[3:]
-    return str(result)
+    return str(result) # it
 
 def add_brackets(in_list):
     if '+' not in in_list:
@@ -32,7 +32,7 @@ def add_brackets(in_list):
     if pluses:
         pos = pluses.popleft()
         in_list = [get_rid_of_brackets_2(in_list[:pos-1] + ['('] + in_list[pos-1:pos+2] + [')'] + in_list[pos+2:])]
-    return(in_list)
+    return(in_list) # is
 
 def get_rid_of_brackets(in_list):
     while '(' in in_list:
@@ -45,7 +45,7 @@ def get_rid_of_brackets(in_list):
                 pos_1 = parentheses.pop()
                 break
         in_list = in_list[:pos_1] + [get_rid_of_brackets(in_list[pos_1+1:pos_2])] + in_list[pos_2+1:]
-    return (calculate_list(in_list))
+    return (calculate_list(in_list)) # a
 
 def get_rid_of_brackets_2(in_list):
     while '(' in in_list:
@@ -58,16 +58,18 @@ def get_rid_of_brackets_2(in_list):
                 pos_1 = parentheses.pop()
                 break
         in_list = in_list[:pos_1] + [get_rid_of_brackets_2(in_list[pos_1+1:pos_2])] + in_list[pos_2+1:]
-    return (get_rid_of_brackets(add_brackets(in_list)))
+    return (get_rid_of_brackets(add_brackets(in_list))) # boy
 
 part_1 = 0
 for operation in operations:
     part_1 += int(get_rid_of_brackets(operation))
 
-print(part_1) # 8929569623593
-
 part_2 = 0
 for operation in operations:
     part_2 += int(get_rid_of_brackets_2(operation))
 
-print(part_2) # 231235959382961
+print(f'Part 1 solution is: {part_1}!')
+print(f'Part 2 solution is: {part_2}!')
+
+# Part 1 solution is: 8929569623593!
+# Part 2 solution is: 231235959382961!
