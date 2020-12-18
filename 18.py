@@ -1,4 +1,5 @@
 import re
+from collections import deque
 
 with open('inputs/18-ex') as inputfile:
     inputs = inputfile.readlines()
@@ -16,13 +17,16 @@ def calculate_list(in_list):
     return str(result)
 
 def get_rid_of_brackets(in_list):
-    if '(' not in in_list:
-        return([calculate_list(in_list)])
-    else:
-        pos_1 = in_list.index('(')
-        pos_2 = in_list.index(')')
-        in_list = in_list[:pos_1] + get_rid_of_brackets(in_list[pos_1+1:pos_2]) + in_list[pos_2+1:]
-
+    while '(' in in_list:
+        parentheses = deque()
+        for n, c in enumerate(in_list):
+            if c == '(':
+                parentheses.append(n)
+            if c == ')':
+                pos_2 = n
+                pos_1 = parentheses.pop()
+                break
+        in_list = in_list[:pos_1] + [get_rid_of_brackets(in_list[pos_1+1:pos_2])] + in_list[pos_2+1:]
     return (calculate_list(in_list))
 
 for operation in operations:
