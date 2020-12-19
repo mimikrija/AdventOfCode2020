@@ -1,3 +1,5 @@
+import re
+
 rules_and_messages = open('inputs/19-ex').read().split('\n\n')
 rules, messages = rules_and_messages
 rules = rules.split('\n')
@@ -12,9 +14,20 @@ for rule in rules:
         rule_value = [eval(rule[split_pos+1:])]
         applied_rules[rule_no] = rule_value
 
+re_numbers = re.compile(r'\d+')
+not_applied_rules = {1: [(2,3),(3,2)], 2: [(4,4), (5, 5)], 3: [(4, 5), (5, 4)]}
+# separate first type of not applied rules:
+for rule in rules:
+    if '\"' not in rule and "|" not in rule:
+        split_pos = rule.index(':')
+        rule_no = int(rule[:split_pos])
+        rule_value = re.findall(re_numbers, rule[split_pos+1:])
+        rule_value = [tuple(int(num) for num in rule_value)]
+        not_applied_rules[rule_no] = rule_value
 
 
-not_applied_rules = {0: [(4, 1, 5)], 1: [(2,3),(3,2)], 2: [(4,4), (5, 5)], 3: [(4, 5), (5, 4)]}
+
+
 
 def who_can_I_apply_next(applied_rules, not_applied_rules):
     rules_to_be_applied_next = []
