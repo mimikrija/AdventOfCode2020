@@ -14,10 +14,11 @@ def who_can_I_apply_next(applied_rules, not_applied_rules):
 
 def apply_rule(applied_rules, not_applied_rules, rule_no):
     rule_pairs = not_applied_rules[rule_no]
-    result = []
+    result = set()
     for first, second in rule_pairs:
-        result += [ one + two for one in applied_rules[first] for two in applied_rules[second]]
-    return result
+        test = {one + two for one in applied_rules[first] for two in applied_rules[second]}
+        result = result.union(test)
+    return set(result)
 
 while not_applied_rules:
     next_rule = who_can_I_apply_next(applied_rules, not_applied_rules)
