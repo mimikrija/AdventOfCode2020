@@ -1,9 +1,19 @@
-# just try it for example 1
-# 0: 1 2
-# 1: "a"
-# 2: 1 3 | 3 1
-# 3: "b"
-applied_rules = {4: ["a"], 5: ["b"]} # I think I can use eval to do this directly on input if "letter in input"/"numbers not present in input"/"only one space present in input"
+rules_and_messages = open('inputs/19-ex').read().split('\n\n')
+rules, messages = rules_and_messages
+rules = rules.split('\n')
+messages = messages.split('\n')
+
+# separate applied rules:
+applied_rules = {}
+for rule in rules:
+    if '\"' in rule:
+        split_pos = rule.index(':')
+        rule_no = int(rule[:split_pos])
+        rule_value = [eval(rule[split_pos+1:])]
+        applied_rules[rule_no] = rule_value
+
+
+
 not_applied_rules = {0: [(4, 1, 5)], 1: [(2,3),(3,2)], 2: [(4,4), (5, 5)], 3: [(4, 5), (5, 4)]}
 
 def who_can_I_apply_next(applied_rules, not_applied_rules):
