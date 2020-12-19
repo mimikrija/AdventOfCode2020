@@ -1,11 +1,11 @@
 import re
 
-rules_and_messages = open('inputs/19-ex').read().split('\n\n')
+rules_and_messages = open('inputs/19').read().split('\n\n')
 rules, messages = rules_and_messages
 rules = rules.split('\n')
 messages = messages.split('\n')
 
-# separate applied rules:
+# parse applied rules:
 applied_rules = {}
 for rule in rules:
     if '\"' in rule:
@@ -15,8 +15,8 @@ for rule in rules:
         applied_rules[rule_no] = rule_value
 
 re_numbers = re.compile(r'\d+')
-not_applied_rules = {1: [(2,3),(3,2)], 2: [(4,4), (5, 5)], 3: [(4, 5), (5, 4)]}
-# separate first type of not applied rules:
+not_applied_rules = {}
+# parse first type of not applied rules:
 for rule in rules:
     if '\"' not in rule and "|" not in rule:
         split_pos = rule.index(':')
@@ -25,7 +25,17 @@ for rule in rules:
         rule_value = [tuple(int(num) for num in rule_value)]
         not_applied_rules[rule_no] = rule_value
 
-
+# parse second type of not applied rules:
+for rule in rules:
+    if "|" in rule:
+        split_pos = rule.index(':')
+        rule_no = int(rule[:split_pos])
+        rest = rule[split_pos+1:]
+        split_pos_2 = rest.index('|')
+        rule_value = []
+        for rule_tuple in rest.split('|'):
+            rule_value += [tuple(int(num) for num in re.findall(re_numbers, rule_tuple))]
+        not_applied_rules[rule_no] = rule_value
 
 
 
