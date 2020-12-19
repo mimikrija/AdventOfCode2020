@@ -38,7 +38,6 @@ for rule in rules:
         not_applied_rules[rule_no] = rule_value
 
 
-
 def who_can_I_apply_next(applied_rules, not_applied_rules):
     rules_to_be_applied_next = []
     for rule_no, rule in not_applied_rules.items():
@@ -70,10 +69,11 @@ while not_applied_rules:
         del not_applied_rules[next_rule]
 
 matches = applied_rules[0]
-print(matches)
 
+part_1 = 0
 
+for message in messages:
+    part_1 += message in matches
 
-# test if the example works
-if all(test in matches for test in ['aaaabb', 'aaabab', 'abbabb', 'abbbab', 'aabaab', 'aabbbb', 'abaaab', 'ababbb']):
-    print('succes!')
+print(f'The number of messages that match is {part_1}!')
+# The number of messages that match is 109!
