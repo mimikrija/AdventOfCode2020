@@ -78,19 +78,25 @@ for message in messages:
 print(f'The number of messages that match is {part_1}!')
 # The number of messages that match is 109!
 
-# these are the valid match combinations:
-# 42    42    31
-# 42    42 11 31
-# 42  8 42    31
-# 42  8 42 11 31
+# part 2:
+# if we apply the loop(s) and rules, rules [8] and [11] call them selves, which means that
+# rule [8] becomes:
+# [42] | [42][8]
+# [42] | [42][42][8]
+# [42] | [42][42][42][8]
+# ... you get the picture
 
-# which is basically all matches which: begin with 42 and end with 31 // this is the first pass
-# it helps that the matches for 42 and 31 are all of same len!
+# rule [11] becomes:
+# [42][31] | [42][11][31]
+# [41][31] | [42][42][11][31][31]
+# [41][31] | [42][42][42][11][31][31][31]
+# ... etc
 
-lenghts_42 = set()
-for rule in applied_rules[42]:
-    lenghts_42.add(len(rule))
-len_42 = lenghts_42.pop()
+# so rule [0] = [8][11] looks something like this:
+# n*[42]m*[31], n > m (because [42] appears more times even in the zero iteration)
+
+# so let's filter messages based on this rule
+
 
 lengths_31 = set()
 for rule in applied_rules[31]:
