@@ -98,73 +98,53 @@ print(f'The number of messages that match is {part_1}!')
 # so let's filter messages based on this rule
 
 
-lengths_31 = set()
-for rule in applied_rules[31]:
-    lengths_31.add(len(rule))
+lenghts_42 = set(len(rule) for rule in applied_rules[42])
+len_42 = lenghts_42.pop()
+lengths_31 = set(len(rule) for rule in applied_rules[31])
 len_31 = lengths_31.pop()
-# ok so let's go
-# first subset of matches are all messages which BOTH begin with 42 and end with 31:
-first_subset = set()
+if len_31 == len_42:
+    len_block = len_31
+else:
+    print("You will need to write a better program to solve this")
+    quit()
+
+# first, choose only messages that match the specific size:
+subset_by_length = set()
 for message in messages:
-    for rule_1 in applied_rules[42]:
-        if message[:len_42] == rule_1:
-            for rule_2 in applied_rules[31]:
-                if message[-len_31:] == rule_2:
-                    first_subset.add(message)
+    if len(message) % len_block == 0:
+        subset_by_length.add(message)
 
-# now we could solve for the first set, but as we will see later this one is already included in other combos
-# 42 42 31
+# which doesn't really help much because all the messages satisfy that rule
+# but I didn't know that (at least for the input data) - good to check anyway
 
+matches_part_2 = set()
+for message in messages:
 
-# following three sets are tricky because they contain unknown rules 8 and 11, but we can try and deduce length of rule 11 from the next matches:
-# 42 42 ?11? 31 
+    # check for consecutive [42] blocks in the message and count how many times they appear
+    count_42 = 0
+    while len_block*(count_42 + 1) <= len(message):
+        block = message[len_block*count_42:len_block*(count_42 + 1)]
+        if block in applied_rules[42]:
+            count_42 += 1
+        else:
+            break
+    # check if next consecutive block is [31], if not - we're not interested
+    if block not in applied_rules[31]:
+        continue
 
-first_tricky_set = set()
-for message in first_subset:
-    for rule_1 in applied_rules[42]:
-        if message[len_42:2*len_42] == rule_1:
-            for rule_2 in applied_rules[31]:
-                if message[-len_31:] == rule_2:
-                    first_tricky_set.add(message)
+    # now check for consecutive [31] blocks
+    count_31 = 0
+    while len_block*(count_42 + count_31 + 1) <= len(message):
+        block = message[len_block*(count_42+count_31):len_block*(count_42 + count_31 + 1)]
+        if block in applied_rules[31]:
+            count_31 += 1
+        else:
+            break
+        if count_31 >= count_42:
+            break
+    if (count_31 + count_42) == len(message)/len_block and count_42 > count_31:
+        matches_part_2.add(message)
 
-lengths_first_tricky_set = set(len(match) for match in first_tricky_set)
-lengths_11 = set(match - 2*len_42 - len_31 for match in lengths_first_tricky_set)
-# all possible lenghts of set 11
-
-
-# next we do it for the set with unknown rule 8:
-# this check will return all matches for both sets:
-# 42 42 31
-# 42 ?8? 42 31 (first and last is already satisfied)
-
-second_tricky_set = set()
-for message in first_subset:
-    for rule_1 in applied_rules[42]:
-        if message[-(len_42+len_31):-len_31] == rule_1:
-            second_tricky_set.add(message)
-
-lengths_second_tricky_set = set(len(match) for match in second_tricky_set)
-lengths_8 = set(match - 2*len_42 - len_31 for match in lengths_second_tricky_set)
-# all possible lenghts of set 8
-
-# FINALLY, we check the last set:
-# 42 8 42 11 31
-# (42) 8 42 11 (31) - first and last rules are already satisfied in the subset we are searching through
-# we know the lenghts of all rules
-# since rule 11 has only one length, we can do a backward search and just check that:
-# total length = len_42 + {len_8} + len_42 + {len_11} + len_31
-
-#if we take into account zero-length 8 and 11 matches, this set actually includes all combinations
-
-last_tricky_set = set()
-for message in first_subset:
-    for len_11 in lengths_11:
-        for len_8 in lengths_8:
-            if len(message) == len_42 + len_8 + len_42 + len_11 + len_31:#and len_11 >= len_31+len_42 and len_8 >= len_42:
-                for rule in applied_rules[42]:
-                    if message[-(len_31+len_11+len_42):-(len_31+len_11)] == rule:
-                        last_tricky_set.add(message)
-
-part_2 = len(last_tricky_set)
-print(part_2) # 328 not!! # 318 not!! # 87 not
-
+part_2 = len(matches_part_2)
+print(f'The number of messages that match with continuous loops is {part_2}!')
+# The number of messages that match with continuous loops is 301!
