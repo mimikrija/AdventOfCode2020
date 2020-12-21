@@ -45,10 +45,10 @@ for _, ingredients in all_foods:
     for ingredient in ingredients:
         part_1 += ingredient in not_alergens
 
-print(part_1)
-# 1977
-
 part_2 = ','.join(item for item in sorted(found_alergens))
 
-print(part_2)
-# dairy,eggs,fish,nuts,peanuts,sesame,shellfish,wheat
+print(f'Non-alergens appear in my list of foods {part_1} times!')
+# Non-alergens appear in my list of foods 1977 times!
+
+print(f'The list of my dangerous ingredients is: {part_2}')
+# The list of my dangerous ingredients is: dairy,eggs,fish,nuts,peanuts,sesame,shellfish,wheat!
