@@ -48,9 +48,7 @@ for _, ingredients in all_foods:
 print(part_1)
 # 1977
 
-part_2 = ''
-for ingredient in sorted(found_alergens):
-    part_2 += ingredient + ','
+part_2 = ','.join(item for item in sorted(found_alergens))
 
-print(part_2[:-1])
+print(part_2)
 # dairy,eggs,fish,nuts,peanuts,sesame,shellfish,wheat
