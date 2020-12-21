@@ -46,4 +46,11 @@ for _, ingredients in all_foods:
         part_1 += ingredient in not_alergens
 
 print(part_1)
+# 1977
 
+part_2 = ''
+for ingredient in sorted(found_alergens):
+    part_2 += ingredient + ','
+
+print(part_2[:-1])
+# dairy,eggs,fish,nuts,peanuts,sesame,shellfish,wheat
