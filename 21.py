@@ -1,5 +1,5 @@
 from collections import Counter
-with open('inputs/21') as inputfile:
+with open('inputs/21-ex') as inputfile:
     inputs = inputfile.readlines()
 
 # parse input into all_foods (list of tupples (alergens, ingredients))
@@ -17,13 +17,14 @@ for line in inputs:
 
 
 # generate dictionary of potential alergens
-potential_alergens = {}
+potential_alergens = {alergen: set() for alergen in ALL_ALERGENS}
 for alergens, ingredients in all_foods:
     for alergen in alergens:
-        if alergen not in potential_alergens.keys():
-            potential_alergens[alergen] = ingredients
-        else:
-            potential_alergens[alergen].union(ingredients)
+        # if alergen not in potential_alergens.keys():
+        #     potential_alergens[alergen] = ingredients
+        # else:
+        potential_alergens[alergen] = potential_alergens[alergen].union(ingredients)
+
 
 
 found_alergens = {}
