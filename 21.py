@@ -2,24 +2,28 @@ from collections import Counter
 with open('inputs/21') as inputfile:
     inputs = inputfile.readlines()
 
+# parse input into all_foods (list of tupples (alergens, ingredients))
+# and into constant sets of all ingredients and all alergens
 all_foods = []
+ALL_INGREDIENTS = set()
+ALL_ALERGENS = set()
 for line in inputs:
     ingredients, alergens = line.strip().split(' (contains ')
     ingredients = set(ingredients.split(' '))
     alergens = set(alergens[:-1].split(', '))
     all_foods.append((alergens, ingredients))
+    ALL_INGREDIENTS = ALL_INGREDIENTS.union(ingredients)
+    ALL_ALERGENS = ALL_ALERGENS.union(alergens)
 
+
+# generate dictionary of potential alergens
 potential_alergens = {}
-ALL_INGREDIENTS = set()
-ALL_ALERGENS = set()
 for alergens, ingredients in all_foods:
     for alergen in alergens:
         if alergen not in potential_alergens.keys():
             potential_alergens[alergen] = ingredients
         else:
             potential_alergens[alergen].union(ingredients)
-    ALL_INGREDIENTS = ALL_INGREDIENTS.union(ingredients)
-    ALL_ALERGENS = ALL_ALERGENS.union(alergens)
 
 
 found_alergens = {}
