@@ -2,16 +2,7 @@
 from collections import deque
 
 cards_input = open('inputs/22').read().split('\n\n')
-
-player_me = deque()
-player_crab = deque()
-for n, deck in enumerate(cards_input):
-    deck = deck.split('\n')
-    for card in deck[1:]:
-        if n == 0:
-            player_me.append(int(card))
-        else:
-            player_crab.append(int(card))
+both_decks = tuple(deque([int(card) for card in input_deck.split('\n')[1:]]) for input_deck in cards_input)
 
 def play_the_game(player_1, player_2):
     while len(player_1) > 0 and len(player_2) > 0:
@@ -97,11 +88,12 @@ def play_recursive_combat(deck_1, deck_2, game):
 
 
 
-
-# part_1 = play_the_game(player_me.copy(), player_crab.copy())
+# player_me, player_crab = both_decks
+# part_1 = play_the_game(player_me, player_crab)
 # print(f'The winning score after one game is {part_1}!')
 # # The winning score after one game is 32199!
 
-part_2_result = play_recursive_combat(player_me.copy(), player_crab.copy(), 0)
+player_me, player_crab = both_decks
+part_2_result = play_recursive_combat(player_me, player_crab, 0)
 part_2 = sum((len(part_2_result)-n) * card for n, card in enumerate(part_2_result))
 print(part_2) # 33780
