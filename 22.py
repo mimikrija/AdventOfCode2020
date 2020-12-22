@@ -93,13 +93,11 @@ def play_recursive_combat(deck_1, deck_2, game):
 
 
 
-# player_me, player_crab = both_decks
-# part_1 = get_score(play_the_game(player_me, player_crab))
-# print(f'The winning score after one game is {part_1}!')
-# # The winning score after one game is 32199!
-
-
+player_me, player_crab = both_decks
+part_1 = get_score(play_the_game(player_me.copy(), player_crab.copy()))
+print(f'The winning score after one game is {part_1}!')
+# The winning score after one game is 32199!
 
 player_me, player_crab = both_decks
-part_2 = get_score(play_recursive_combat(player_me, player_crab, 0))
+part_2 = get_score(play_recursive_combat(player_me.copy(), player_crab.copy(), 0))
 print(part_2) # 33780
