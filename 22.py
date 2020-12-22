@@ -100,4 +100,5 @@ print(f'The winning score after one game is {part_1}!')
 
 player_me, player_crab = both_decks
 part_2 = get_score(play_recursive_combat(player_me.copy(), player_crab.copy(), 0))
-print(part_2) # 33780
+print(f'The winning score after >> RECURSIVE COMBAT CRAB vs ME << is {part_2}!')
+# The winning score after >> RECURSIVE COMBAT CRAB vs ME << is 33780!
