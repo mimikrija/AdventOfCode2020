@@ -5,7 +5,7 @@ cards_input = open('inputs/22').read().split('\n\n')
 both_decks = tuple(deque([int(card) for card in input_deck.split('\n')[1:]]) for input_deck in cards_input)
 
 def get_score(deck):
-    """returns the score `deck` score based on game rules"""
+    """ returns the score `deck` score based on game rules """
     # multiply every card value with their position counting
     # from the bottom of the deck
     return sum((len(deck)-n)*card for n, card in enumerate(deck))
