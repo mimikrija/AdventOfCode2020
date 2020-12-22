@@ -10,21 +10,39 @@ def get_score(deck):
     # from the bottom of the deck
     return sum((len(deck)-n)*card for n, card in enumerate(deck))
 
-def play_the_game(deck_1, deck_2):
-    while len(deck_1) > 0 and len(deck_2) > 0:
-        card_1 = deck_1.popleft()
-        card_2 = deck_2.popleft()
-        if card_1 > card_2:
-            deck_1.append(card_1)
-            deck_1.append(card_2)
-        else:
-            deck_2.append(card_2)
-            deck_2.append(card_1)
-    if len(deck_1) > 0:
-        winner = deck_1
+def play_round(in_deck_1, in_deck_2):
+    deck_1 = in_deck_1.copy()
+    deck_2 = in_deck_2.copy()
+
+    if deck_1[0] > deck_2[0]:
+        taker = deck_1
+        loser = deck_2
     else:
-        winner = deck_2
-    return winner
+        taker = deck_2
+        loser = deck_1
+    # taker keeps their card and takes the loser's card
+    taker.rotate(-1)
+    taken_card = loser.popleft()
+    taker.append(taken_card)
+
+    # we must return them in the correct order, regardless of
+    # who the winner is
+    return deck_1, deck_2
+
+
+def play_the_game(deck_1, deck_2):
+    """ returns `winner`, the winning deck after a standard game is
+    played with `deck_1`, `deck_2` """
+
+    # game is played as long as there are cards in both decks
+    while deck_1 and deck_2:
+        deck_1, deck_2 = play_round(deck_1, deck_2)
+
+    # game over; determine who's the winner:
+    for deck in (deck_1, deck_2):
+        if deck:
+            return deck
+
 game = 0
 def play_recursive_combat(deck_1, deck_2, game):
     round = 0
