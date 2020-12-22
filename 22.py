@@ -32,4 +32,5 @@ def play_the_game(player_1, player_2):
 
 
 part_1 = play_the_game(player_me, player_crab)
-print(part_1) # 32199
+print(f'The winning score after one game is {part_1}!')
+# The winning score after one game is 32199!
