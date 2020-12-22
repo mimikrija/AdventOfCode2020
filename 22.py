@@ -1,7 +1,7 @@
 # --- Day 22: Crab Combat ---
 from collections import deque
 
-cards_input = open('inputs/22-ex').read().split('\n\n')
+cards_input = open('inputs/22').read().split('\n\n')
 
 player_me = deque()
 player_crab = deque()
@@ -35,16 +35,16 @@ def play_recursive_combat(deck_1, deck_2, game):
     game += 1
     configurations_1 = []
     configurations_2 = []
-    print(f'=== Game {game} ===')
+    # print(f'=== Game {game} ===')
     while len(deck_1) > 0 and len(deck_2) > 0:
         round += 1
-        print(f'-- Round {round} (Game {game}) --')
-        print(f"Player 1's deck: {deck_1}")
-        print(f"Player 2's deck: {deck_2}")
+        # print(f'-- Round {round} (Game {game}) --')
+        # print(f"Player 1's deck: {deck_1}")
+        # print(f"Player 2's deck: {deck_2}")
         # check if the decks are in one of the previous configurations
-        if deck_1 in configurations_1 or deck_2 in configurations_2:
+        #print(configurations_1, configurations_2)
+        if list(deck_1) in configurations_1 or list(deck_2) in configurations_2:
             winner = deck_1
-            printf('precious configuration met')
             return winner
         else: # continue the game
             # append the decks to configurations
@@ -55,8 +55,8 @@ def play_recursive_combat(deck_1, deck_2, game):
             card_1 = deck_1.popleft()
             card_2 = deck_2.popleft()
 
-            print(f'Player 1 plays: {card_1}')
-            print(f'Player 2 plays: {card_2}')
+            # print(f'Player 1 plays: {card_1}')
+            # print(f'Player 2 plays: {card_2}')
 
             # If both players have at least as many cards remaining in their deck
             # as the value of the card they just drew...
@@ -90,7 +90,7 @@ def play_recursive_combat(deck_1, deck_2, game):
                     deck_2.append(card_1)
                     winner = deck_2
                     player = 'Player 2'
-        print(f"{player} wins round {round} of game {game}!\n")
+        # print(f"{player} wins round {round} of game {game}!\n")
                 
         
     return winner
@@ -98,10 +98,10 @@ def play_recursive_combat(deck_1, deck_2, game):
 
 
 
-part_1 = play_the_game(player_me.copy(), player_crab.copy())
-print(f'The winning score after one game is {part_1}!')
-# The winning score after one game is 32199!
+# part_1 = play_the_game(player_me.copy(), player_crab.copy())
+# print(f'The winning score after one game is {part_1}!')
+# # The winning score after one game is 32199!
 
 part_2_result = play_recursive_combat(player_me.copy(), player_crab.copy(), 0)
 part_2 = sum((len(part_2_result)-n) * card for n, card in enumerate(part_2_result))
-print(part_2)
+print(part_2) # 33780
