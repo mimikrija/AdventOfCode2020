@@ -27,20 +27,23 @@ def play_round(deck_1, deck_2):
     # who the winner is
     return deck_1, deck_2, taker
 
+def take_deck_part(in_deck):
+    new_deck = deque()
+    for n, card in enumerate(list(in_deck)[1:]):
+        if in_deck[0] > n:
+            new_deck.append(card)
+    return(new_deck)
+
 def play_combat_round(deck_1, deck_2):
+    new_decks = tuple(take_deck_part(deck) for deck in (deck_1, deck_2))
+    new_deck_1, new_deck_2 = new_decks
     card_1 = deck_1.popleft()
     card_2 = deck_2.popleft()
+
     # To play a sub-game of Recursive Combat, each player creates a new deck
     # by making a copy of the next cards in their deck
     # (the quantity of cards copied is equal to the number on the card they drew to trigger the sub-game)
-    new_deck_1 = deque()
-    for n, card in enumerate(deck_1):
-        if card_1 > n:
-            new_deck_1.append(card)
-    new_deck_2 = deque()
-    for n, card in enumerate(deck_2):
-        if card_2 > n:
-            new_deck_2.append(card)
+
     
     # the winner of the round is determined by playing a new game of Recursive Combat!
     new_deck_1, new_deck_2, sub_winner = play_recursive_combat(new_deck_1, new_deck_2)
