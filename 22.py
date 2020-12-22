@@ -10,20 +10,20 @@ def get_score(deck):
     # from the bottom of the deck
     return sum((len(deck)-n)*card for n, card in enumerate(deck))
 
-def play_the_game(player_1, player_2):
-    while len(player_1) > 0 and len(player_2) > 0:
-        card_1 = player_1.popleft()
-        card_2 = player_2.popleft()
+def play_the_game(deck_1, deck_2):
+    while len(deck_1) > 0 and len(deck_2) > 0:
+        card_1 = deck_1.popleft()
+        card_2 = deck_2.popleft()
         if card_1 > card_2:
-            player_1.append(card_1)
-            player_1.append(card_2)
+            deck_1.append(card_1)
+            deck_1.append(card_2)
         else:
-            player_2.append(card_2)
-            player_2.append(card_1)
-    if len(player_1) > 0:
-        winner = player_1
+            deck_2.append(card_2)
+            deck_2.append(card_1)
+    if len(deck_1) > 0:
+        winner = deck_1
     else:
-        winner = player_2
+        winner = deck_2
     return winner
 game = 0
 def play_recursive_combat(deck_1, deck_2, game):
@@ -87,8 +87,6 @@ def play_recursive_combat(deck_1, deck_2, game):
                     winner = deck_2
                     player = 'Player 2'
         # print(f"{player} wins round {round} of game {game}!\n")
-                
-        
     return winner
 
 
