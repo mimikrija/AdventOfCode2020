@@ -10,102 +10,89 @@ def get_score(deck):
     # from the bottom of the deck
     return sum((len(deck)-n)*card for n, card in enumerate(deck))
 
-def play_round(deck_1, deck_2):
 
-    if deck_1[0] > deck_2[0]:
-        taker = deck_1
-        loser = deck_2
+def play_round(decks, condition):
+    # move cards into the winning deck depending on the condition
+    if condition:
+        taker, loser = decks
     else:
-        taker = deck_2
-        loser = deck_1
+        taker, loser = reversed(decks)
     # taker keeps their card and takes the loser's card
     taker.rotate(-1)
     taken_card = loser.popleft()
     taker.append(taken_card)
+    return taker
 
-    # we must return them in the correct order, regardless of
-    # who the winner is
-    return deck_1, deck_2, taker
 
 def take_deck_part(in_deck):
     new_deck = deque()
     for n, card in enumerate(list(in_deck)[1:]):
         if in_deck[0] > n:
             new_deck.append(card)
-    return(new_deck)
+    return new_deck
 
-def play_combat_round(deck_1, deck_2):
-    new_decks = tuple(take_deck_part(deck) for deck in (deck_1, deck_2))
-    new_deck_1, new_deck_2 = new_decks
-    card_1 = deck_1.popleft()
-    card_2 = deck_2.popleft()
 
+def play_combat_round(decks):
     # To play a sub-game of Recursive Combat, each player creates a new deck
     # by making a copy of the next cards in their deck
     # (the quantity of cards copied is equal to the number on the card they drew to trigger the sub-game)
+    new_decks = tuple(take_deck_part(deck) for deck in decks)
 
-    
     # the winner of the round is determined by playing a new game of Recursive Combat!
-    new_deck_1, new_deck_2, sub_winner = play_recursive_combat(new_deck_1, new_deck_2)
-    if sub_winner == new_deck_1:
-        deck_1.append(card_1)
-        deck_1.append(card_2)
-        winner = deck_1
-    else:
-        deck_2.append(card_2)
-        deck_2.append(card_1)
-        winner = deck_2
-    return deck_1, deck_2, winner
+    sub_winner = play_recursive_combat(new_decks)
+    winner = play_round(decks, sub_winner == new_decks[0])
+    return winner
 
-def play_the_game(deck_1, deck_2):
+def play_the_game(decks):
     """ returns `winner`, the winning deck after a standard game is
-    played with `deck_1`, `deck_2` """
+    played with ``decks = (deck_1, `deck_2)` """
 
     # game is played as long as there are cards in both decks
-    while deck_1 and deck_2:
-        deck_1, deck_2, winner = play_round(deck_1, deck_2)
+    while all(deck for deck in decks):
+        winner = play_round(decks, decks[0][0] > decks[1][0])
 
     # game over; determine who's the winner:
     return winner
 
 
-def play_recursive_combat(deck_1, deck_2):
-
+def play_recursive_combat(decks):
     configurations_1 = []
     configurations_2 = []
-
-    while deck_1 and deck_2:
-        # first check if the decks are in one of the previously seen configurations
-        # and end the game if yes
-        if list(deck_1) in configurations_1 or list(deck_2) in configurations_2:
-            winner = deck_1
-            return deck_1, deck_2, winner
+    saved_configurations = (configurations_1,configurations_2)
+ 
+    while all(deck for deck in decks):
+        # if previous configuration met, player 1 wins
+        if any(list(deck) in configurations for deck, configurations in zip(decks,(configurations_1, configurations_2))):
+                return decks[0]
 
         # continue the game
         # append the decks to configurations
+        deck_1, deck_2 = decks
         configurations_1.append(list(deck_1))
         configurations_2.append(list(deck_2))
-
-        # the players begin the round by each drawing the top card of their deck as normal
+        # if not saved_configurations:
+        #     saved_configurations = tuple(list(deck) for deck in decks)
+        # else:
+        #     saved_configurations = tuple(configurations.append(list(deck)) for deck, configurations in zip(decks, saved_configurations))
 
         # If both players have at least as many cards remaining in their deck
         # as the value of the card they just drew...
-        if all(len(deck)-1 >= deck[0] for deck in (deck_1, deck_2)):
+        if all(len(deck)-1 >= deck[0] for deck in decks):
             # play combat round
-            deck_1, deck_2, winner = play_combat_round(deck_1, deck_2)
+            winner = play_combat_round(decks)
         else:
             # play one standard round (draw, two, larger wins)
-            deck_1, deck_2, winner = play_round(deck_1, deck_2)
+            winner = play_round(decks, decks[0][0] > decks[1][0])
 
-    return deck_1, deck_2, winner
+    return winner
 
 
-player_me, player_crab = both_decks
-part_1 = get_score(play_the_game(player_me.copy(), player_crab.copy()))
+players = tuple(deck.copy() for deck in both_decks)
+part_1 = get_score(play_the_game(players))
 print(f'The winning score after one game is {part_1}!')
 # The winning score after one game is 32199!
 
-player_me, player_crab = both_decks
-part_2 = get_score(play_recursive_combat(player_me.copy(), player_crab.copy())[2])
+players = tuple(deck.copy() for deck in both_decks)
+part_2 = get_score(play_recursive_combat(players))
 print(f'The winning score after >> RECURSIVE COMBAT CRAB vs ME << is {part_2}!')
 # The winning score after >> RECURSIVE COMBAT CRAB vs ME << is 33780!
