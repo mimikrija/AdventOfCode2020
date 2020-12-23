@@ -58,22 +58,16 @@ def play_the_game(decks):
 def play_recursive_combat(decks):
     configurations_1 = []
     configurations_2 = []
-    saved_configurations = (configurations_1,configurations_2)
+    saved_configurations = (configurations_1, configurations_2)
  
     while all(deck for deck in decks):
         # if previous configuration met, player 1 wins
-        if any(list(deck) in configurations for deck, configurations in zip(decks,(configurations_1, configurations_2))):
-                return decks[0]
-
-        # continue the game
-        # append the decks to configurations
-        deck_1, deck_2 = decks
-        configurations_1.append(list(deck_1))
-        configurations_2.append(list(deck_2))
-        # if not saved_configurations:
-        #     saved_configurations = tuple(list(deck) for deck in decks)
-        # else:
-        #     saved_configurations = tuple(configurations.append(list(deck)) for deck, configurations in zip(decks, saved_configurations))
+        if all(list(deck) in configurations for deck, configurations in zip(decks,saved_configurations)):
+            return decks[0]
+        
+        # append saved configurations
+        for deck, configurations in zip(decks, saved_configurations):
+            configurations.append(list(deck))
 
         # If both players have at least as many cards remaining in their deck
         # as the value of the card they just drew...
