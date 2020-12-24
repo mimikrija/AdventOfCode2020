@@ -8,5 +8,19 @@ HEX_DIRECTIONS = {
 }
 
 def hex_add(in_hex_a, in_hex_b):
-    return tuple(coordinate_a+ coordinate_b for coordinate_a, coordinate_b in zip(in_hex_a, in_hex_b))
+    return tuple(coordinate_a + coordinate_b for coordinate_a, coordinate_b in zip(in_hex_a, in_hex_b))
 
+instructions = [['e','se','w'], ['nw','w','sw','e','e']]
+
+flipped_tiles = {}
+for instruction in instructions:
+    position = (0, 0, 0)
+    for direction in instruction:
+        position = hex_add(position, HEX_DIRECTIONS[direction])
+    if position in flipped_tiles:
+        flipped_tiles[position] = not flipped_tiles[position]
+    else:
+        flipped_tiles[position] = True
+
+part_1 = sum(value for value in flipped_tiles.values())
+print(part_1)
