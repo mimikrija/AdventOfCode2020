@@ -1,3 +1,7 @@
+import re
+with open('inputs/24-ex') as inputfile:
+    inputs = inputfile.readlines()
+
 HEX_DIRECTIONS = {
     'nw': (0, 1, -1),
     'ne': (1, 0, -1),
@@ -7,10 +11,12 @@ HEX_DIRECTIONS = {
      'w': (-1, 1, 0)
 }
 
+re_directions = re.compile(r'nw|ne|se|sw|e|w')
+
 def hex_add(in_hex_a, in_hex_b):
     return tuple(coordinate_a + coordinate_b for coordinate_a, coordinate_b in zip(in_hex_a, in_hex_b))
 
-instructions = [['e','se','w'], ['nw','w','sw','e','e']]
+instructions = [re.findall(re_directions, line) for line in inputs]
 
 flipped_tiles = {}
 for instruction in instructions:
