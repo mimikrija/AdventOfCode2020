@@ -1,10 +1,10 @@
 input_cups = '467528193'
-CIRCLE_SIZE = len(input_cups)
+circle_size = len(input_cups)
 
 # linked dictionary
 cups_circle = {}
 for n, cup in enumerate(input_cups):
-    cups_circle[int(cup)] = int(input_cups[(n+1)%CIRCLE_SIZE])
+    cups_circle[int(cup)] = int(input_cups[(n+1)%circle_size])
 
 def get_picked_up(in_current_cup, in_cups):
     picked_up = set()
@@ -31,7 +31,7 @@ def get_destination_label(current_cup, picked_up, in_cups):
 def print_cups(in_cups, head_cup):
     current_cup = head_cup
     printed = ''
-    for _ in range(CIRCLE_SIZE-1):
+    for _ in range(circle_size-1):
         printed += ''+ str(cups_circle[current_cup])
         current_cup = cups_circle[current_cup]
     return (printed)
