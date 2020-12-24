@@ -23,8 +23,8 @@ def tile_neighbors(in_hex):
     return [hex_neighbor(in_hex, direction) for direction in HEX_DIRECTIONS]
 
 def art_installation(in_floor):
-    new_floor = in_floor.copy()
-    expanded_floor = new_floor.copy()
+    new_floor = {}
+    expanded_floor = in_floor.copy()
     for tile in in_floor:
         # expand mesh
         neighbors = tile_neighbors(tile)
@@ -34,19 +34,20 @@ def art_installation(in_floor):
             else:
                 expanded_floor[neighbor] = False
 
+    # LOOP THROUGH EXPANDED MESH OTHERWISE THERE IS REALLY NO POINT OF EXPANDING IS IT?!
     for tile, black in expanded_floor.items():
         neighbors = tile_neighbors(tile)
         count_black_adjacents = sum(expanded_floor.get(candidate, False) for candidate in neighbors)
         
-        # Any black tile with zero or more than 2 black tiles immediately adjacent to it is flipped to white.
+        # Any black tile with zero or more than 2 black tiles immediately adjacent to it is flipped to white
+        # else it remains the same (black) and needs to remain in the dictionary as black hence the `not`
         if black:
-            if count_black_adjacents == 0 or count_black_adjacents > 2:
-                new_floor[tile] = False
+            new_floor[tile] = not (count_black_adjacents == 0 or count_black_adjacents > 2)
+
         # Any white tile with exactly 2 black tiles immediately adjacent to it is flipped to black.
         else:
             if count_black_adjacents == 2:
                 new_floor[tile] = True
-
 
     return new_floor
 
@@ -71,8 +72,10 @@ print(f'After all the flipping, {part_1} tiles are left black side up!')
 
 current_floor = flipped_tiles.copy()
 
-
-for day in range(1, 101):
+days_of_art = 100
+for day in range(100):
     current_floor = art_installation(current_floor)
+part_2 = count_black_tiles(current_floor)
 
-print(count_black_tiles(current_floor)) # 4353
+print(f'After {days_of_art} days of art installation, there are {part_2} black tiles in the lobby!')
+# After 100 days of art installation, there are 4353 black tiles in the lobby!
