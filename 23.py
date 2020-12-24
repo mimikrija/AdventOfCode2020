@@ -52,4 +52,5 @@ for move in range(100):
     current_cup = cups_circle[current_cup]
 
 
-print(f'cups: {print_cups(cups_circle, 1)}') # 43769582
+print(f'Labels on the cups after {move+1} moves of the crabby cups, starting after cup labeled "1", are: {print_cups(cups_circle, 1)}')
+# Labels on the cups after 100 moves of the crabby cups, starting after cup labeled "1", are: 43769582
