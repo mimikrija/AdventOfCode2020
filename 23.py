@@ -29,11 +29,9 @@ def print_cups(in_cups, head_cup):
     return (printed)
 
 def get_crabby(cups_circle):
-
     first_picked, last_picked, picked_up = get_picked_up(current_cup, cups_circle)
     destination = get_destination_label(current_cup-1, picked_up)
-
-
+    # shift the cups:
     cups_circle[current_cup] = cups_circle[last_picked]
     cups_circle[last_picked] = cups_circle[destination]
     cups_circle[destination] = first_picked
@@ -49,7 +47,7 @@ cups_circle = {}
 for n, cup in enumerate(input_cups):
     cups_circle[int(cup)] = int(input_cups[(n+1)%circle_size])
 
-all_labels = set(cups_circle.keys())
+
 
 min_label = min(cups_circle.keys())
 max_label = max(cups_circle.keys())
