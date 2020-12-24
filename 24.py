@@ -1,5 +1,5 @@
 import re
-with open('inputs/24-ex') as inputfile:
+with open('inputs/24') as inputfile:
     inputs = inputfile.readlines()
 
 HEX_DIRECTIONS = {
@@ -29,4 +29,5 @@ for instruction in instructions:
         flipped_tiles[position] = True
 
 part_1 = sum(value for value in flipped_tiles.values())
-print(part_1)
+print(f'After all the flipping, {part_1} tiles are left black side up!')
+# After all the flipping, 469 tiles are left black side up!
