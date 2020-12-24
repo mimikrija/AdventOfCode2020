@@ -24,15 +24,12 @@ def tile_neighbors(in_hex):
 
 def art_installation(in_floor):
     new_floor = {}
-    expanded_floor = in_floor.copy()
+    expanded_floor = {tile: black for tile, black in in_floor.items() if black}
     for tile in in_floor:
         # expand mesh
         neighbors = tile_neighbors(tile)
         for neighbor in neighbors:
-            if neighbor in expanded_floor:
-                continue
-            else:
-                expanded_floor[neighbor] = False
+            expanded_floor[neighbor] = in_floor.get(neighbor, False)
 
     # LOOP THROUGH EXPANDED MESH OTHERWISE THERE IS REALLY NO POINT OF EXPANDING IS IT?!
     for tile, black in expanded_floor.items():
