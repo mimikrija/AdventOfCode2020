@@ -18,15 +18,16 @@ def get_picked_up(in_current_cup, in_cups):
     return first_picked_up, last_picked_up, picked_up
 
 
-def get_destination_label(current_cup, picked_up, in_cups):
-    destination_cup = current_cup - 1
-    where_to_look = set(in_cups.keys()).difference(picked_up)
-    if destination_cup == 0:
-        destination_cup = max(where_to_look)
-    if destination_cup in where_to_look:
-        return destination_cup
-    else:
-        return get_destination_label(destination_cup, picked_up, in_cups)
+def get_destination_label(destination_cup, not_allowed, min_label, max_label):
+
+    while True:
+        if destination_cup < min_label:
+            destination_cup = max_label
+        if destination_cup not in not_allowed:
+            break
+        destination_cup -= 1
+
+    return destination_cup
 
 def print_cups(in_cups, head_cup):
     current_cup = head_cup
@@ -36,12 +37,17 @@ def print_cups(in_cups, head_cup):
         current_cup = cups_circle[current_cup]
     return (printed)
 
-
+all_labels = set(cups_circle.keys())
 current_cup = list(cups_circle.keys())[0]
 
+
+
 def get_crabby(cups_circle):
+    min_label = min(cups_circle.keys())
+    max_label = max(cups_circle.keys())
     first_picked, last_picked, picked_up = get_picked_up(current_cup, cups_circle)
-    destination = get_destination_label(current_cup, picked_up, cups_circle)
+    destination = get_destination_label(current_cup-1, picked_up, min_label, max_label)
+
 
     cups_circle[current_cup] = cups_circle[last_picked]
     cups_circle[last_picked] = cups_circle[destination]
@@ -54,3 +60,43 @@ for move in range(100):
 
 print(f'Labels on the cups after {move+1} moves of the crabby cups, starting after cup labeled "1", are: {print_cups(cups_circle, 1)}')
 # Labels on the cups after 100 moves of the crabby cups, starting after cup labeled "1", are: 43769582
+
+
+# party 2
+
+
+
+first_label = int(input_cups[0])
+next_label = max(int(num) for num in input_cups) + 1
+
+cups_big_circle = {}
+for n, cup in enumerate(input_cups):
+    if n < len(input_cups)-1:
+        cups_big_circle[int(cup)] = int(input_cups[(n+1)])
+    else:
+        cups_big_circle[int(cup)] = next_label
+
+for n in range(next_label, 1000000):
+    cups_big_circle[n] = n + 1
+
+cups_big_circle[1000000] = first_label
+
+
+circle_size = len(cups_big_circle)
+all_labels = set(cups_big_circle.keys())
+
+
+current_cup = first_label
+for move in range(8):
+    print(current_cup)
+    get_crabby(cups_big_circle)
+    current_cup = cups_big_circle[current_cup]
+
+
+
+first_star_is_under = cups_big_circle[1]
+second_star_is_under = cups_big_circle[first_star_is_under]
+party_2 = first_star_is_under*second_star_is_under
+
+print(f'Labels on the cups after {move+1} moves of the MEGA crabby cups, starting after cup labeled "1", are: {first_star_is_under}, {second_star_is_under}!')
+print(f'Party 2 solution is: {party_2}!')
