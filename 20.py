@@ -7,15 +7,10 @@ from itertools import product
 # but we do know that two sides are flipped, either N to S or E to W
 # in that sense every tile has two possible configurations (we'll worry about rotation later)
 
-# each tile has 10 bits
-TILE_SIZE = 10 # input array len
+
 
 def convert_sides_to_num(in_sides):
     return [int(side,2) for side in in_sides]
-
-    # for side in in_sides:
-    #     binary = in_string.translate(str.maketrans('#.','10'))
-    # return int(binary, 2)
 
 def generate_configurations(in_sides):
     # there are 4 possible configurations: original/rotated, flipped horizontally, flipped vertically, fliped both
@@ -43,8 +38,9 @@ def generate_configurations(in_sides):
 re_numbers = re.compile(r'\d+')
 inputs = open('inputs/20').read().split('\n\n')
 input_tiles = {}
-TILE_SIZE = 10 # ovo izracunaj!
+
 NUMBER_OF_TILES = len(inputs)
+TILE_SIZE = len(inputs[0].split('\n')[0])
 
 for tile in inputs:
     tile_data = tile.split('\n')
@@ -68,9 +64,6 @@ def read_sides(in_tile):
     return sides
 
 all_tiles = {}
-
-
-# for ID in input_dict.keys():
 
 
 for ID, tile in input_tiles.items():
