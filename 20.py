@@ -93,10 +93,21 @@ for compare_with in all_tiles.keys():
                     matched_tiles[compare_with].add(ID)
                 else:
                     matched_tiles[compare_with] = set([ID])
+corners = {}
+borders = {}
+middles = {}
+
 party_1 = 1
 for tile, match in matched_tiles.items():
-    if len (match) == 2:
-        print(f'corner tile is {tile}')
-        party_1 *= int(tile)
+    if len (match) == 2:   # corners
+        corners[tile] = match
+    elif len (match) == 3: # borders
+        borders[tile] = match
+    else:                  # middles
+        middles[tile] = match
 
-print(party_1)
+for tile in corners:
+    party_1 *= int(tile)
+
+print(f'Multiplied corner IDs: {" * ".join(tile for tile in corners)} = {party_1}!')
+# Multiplied corner IDs: 1867 * 2441 * 2633 * 1663 = 19955159604613!
