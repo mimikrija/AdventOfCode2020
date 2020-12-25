@@ -4,8 +4,6 @@ with open('inputs/25') as inputfile:
 card_public_key = int(inputs[0].strip())
 door_public_key = int(inputs[1].strip())
 
-print(card_public_key, door_public_key)
-
 SUBJECT_NUMBER = 7
 DIVIDE_BY = 20201227
 
@@ -28,11 +26,9 @@ def get_encryption_key(public_key, loop_size):
         value = value % DIVIDE_BY
     return value
 
-
-
-
 card_loop = find_loop_size(card_public_key)
 door_loop = find_loop_size(door_public_key)
+party_1 = get_encryption_key(card_public_key,door_loop)
 
-print(get_encryption_key(card_public_key,door_loop))
-
+print(f'The encryption key is {party_1}!')
+# The encryption key is 6408263!
