@@ -41,7 +41,7 @@ def generate_configurations(in_sides):
     return [in_sides, flipped_v, flipped_h]
 
 re_numbers = re.compile(r'\d+')
-inputs = open('inputs/20-ex').read().split('\n\n')
+inputs = open('inputs/20').read().split('\n\n')
 input_tiles = {}
 TILE_SIZE = 10 # ovo izracunaj!
 NUMBER_OF_TILES = len(inputs)
@@ -80,55 +80,30 @@ for ID, tile in input_tiles.items():
     all_tiles[ID] = tile_slides_dec # {elem for sides in tile_slides_dec for elem in sides}
 
 
+matched_tiles = {}
 
-all_singles = []
-for combo in product((0,1,2), repeat=NUMBER_OF_TILES):
-    test = []
-    for tile, index in zip(all_tiles.values(), combo):
-        test += tile[index]
-    if len(set(test)) == 4*NUMBER_OF_TILES-12: #48:
-        #singles = [ count.key() for count in Counter(test) if count.value() == 1]
-        singles=[]
-        for key, value in Counter(test).items():
-            if value == 1:
-                singles.append(key)
-        all_singles.append(singles)
-        break
+def compare_tiles(ID_fixed, ID_possible_match, tiles_dict):
+    sides_to_look_at = tiles_dict[ID_fixed][0]
+    for sides in tiles_dict[ID_possible_match]:
+        for side in sides:
+            if side in sides_to_look_at:
+                return True
+    return False
 
-# locate the tiles who have two singles
-part_1 = 1
-for ID, tile in all_tiles.items():
-    for configuration in tile:
-        count = 0
-        for side in configuration:
-            count += side in all_singles[0]
-        if count == 2:
-            part_1 *= int(ID)
+for compare_with in all_tiles.keys():
+    for ID, tile in all_tiles.items():
+        if ID == compare_with:
+            continue
+        else:
+            if compare_tiles(ID, compare_with, all_tiles):
+                if compare_with in matched_tiles:
+                    matched_tiles[compare_with].add(ID)
+                else:
+                    matched_tiles[compare_with] = set([ID])
+party_1 = 1
+for tile, match in matched_tiles.items():
+    if len (match) == 2:
+        print(f'corner tile is {tile}')
+        party_1 *= int(tile)
 
-print(part_1)
-    
-
-
-#for tile in all_tiles.items():
-    
-""" combo = []
-for tile in all_tiles.values():
-    combo += tile[3]
-print(len(combo))
-print(len(set(combo))) """
-
-
-
-
-
-
-
-
-# get input dimensions
-
-
-
-
-
-
-
+print(party_1)
