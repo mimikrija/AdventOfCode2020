@@ -39,6 +39,16 @@ def compare_tiles(ID_fixed, ID_possible_match, tiles_dict):
                 return True
     return False
 
+def rotate_clockwise(in_matrix):
+    return [[in_matrix[j][i] for j in range(len(in_matrix[0])-1,-1,-1)] for i in range(len(in_matrix))]
+
+def flip(in_matrix):
+    return [[in_matrix[i][j] for j in range(len(in_matrix[0])-1,-1,-1)] for i in range(len(in_matrix))]
+
+def print_pretty(in_matrix):
+    for line in (in_matrix):
+        print (" ".join(str(c) for c in line))
+
 
 # read input from file
 re_numbers = re.compile(r'\d+')
