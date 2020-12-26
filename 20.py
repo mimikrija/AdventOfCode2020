@@ -14,26 +14,14 @@ def convert_sides_to_num(in_sides):
 
 def generate_configurations(in_sides):
     # there are 4 possible configurations: original/rotated, flipped horizontally, flipped vertically, fliped both
-    # this is fishy but works for now
-    flipped_v = [] # flipped vertically N-S
-    flipped_h = [] # flipped vertically E-W
-    flipped_both = []
-    for n, side in enumerate(in_sides):
-        if n % 2 == 0:
-            flipped_v.append(''.join(reversed(side)))
-            flipped_h.append(side)
-        else:
-            flipped_v.append(side)
-            flipped_h.append(''.join(reversed(side)))
-    temp1 = flipped_v[1]
-    temp2 = flipped_v[3]
-    flipped_v[3] = temp1
-    flipped_v[1] = temp2
-    temp1 = flipped_h[0]
-    temp2 = flipped_h[2]
-    flipped_h[2] = temp1
-    flipped_h[0] = temp2
-    return [in_sides, flipped_v, flipped_h]
+    # flipped both reduces to rotation, so we don't care about that one
+    # flipped vertically and flipped horizontally differ only by two rotations
+    # the property of any flipped configuration is that *ALL* the sides are reversed (and their order is reversed as well)
+    # the property of any non-flipped configuration is that *ALL* the sides are not reversed.
+    # hence (for matching purposes) it is enough to generate a list of sides and a list of flipped sides
+    flipped = reversed([''.join(reversed(side)) for side in in_sides])
+
+    return [in_sides, flipped]
 
 re_numbers = re.compile(r'\d+')
 inputs = open('inputs/20').read().split('\n\n')
