@@ -1,13 +1,4 @@
 import re
-from collections import Counter
-from itertools import product
-# every tile is a dict ID: [side_N, side_E, side_S, side_W]
-# I still need to think of a nice convention of writing slide nums
-# every tile was rotated and flipped - this means that we don't know the order of N, E, S, W,
-# but we do know that two sides are flipped, either N to S or E to W
-# in that sense every tile has two possible configurations (we'll worry about rotation later)
-
-
 
 def convert_sides_to_num(in_sides):
     return [int(side,2) for side in in_sides]
@@ -51,14 +42,14 @@ def read_sides(in_tile):
     sides = [''.join(side) for side in sides]
     return sides
 
-all_tiles = {}
+tiles_sides_only = {}
 
 
 for ID, tile in input_tiles.items():
     tile_sides_binary = read_sides(tile)
     bla = generate_configurations(tile_sides_binary)
     tile_slides_dec = [convert_sides_to_num(sides) for sides in generate_configurations(tile_sides_binary)]
-    all_tiles[ID] = tile_slides_dec # {elem for sides in tile_slides_dec for elem in sides}
+    tiles_sides_only[ID] = tile_slides_dec # {elem for sides in tile_slides_dec for elem in sides}
 
 
 matched_tiles = {}
@@ -71,12 +62,12 @@ def compare_tiles(ID_fixed, ID_possible_match, tiles_dict):
                 return True
     return False
 
-for compare_with in all_tiles.keys():
-    for ID, tile in all_tiles.items():
+for compare_with in tiles_sides_only.keys():
+    for ID, tile in tiles_sides_only.items():
         if ID == compare_with:
             continue
         else:
-            if compare_tiles(ID, compare_with, all_tiles):
+            if compare_tiles(ID, compare_with, tiles_sides_only):
                 if compare_with in matched_tiles:
                     matched_tiles[compare_with].add(ID)
                 else:
@@ -99,3 +90,4 @@ for tile in corners:
 
 print(f'Multiplied corner IDs: {" * ".join(tile for tile in corners)} = {party_1}!')
 # Multiplied corner IDs: 1867 * 2441 * 2633 * 1663 = 19955159604613!
+
