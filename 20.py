@@ -1,4 +1,5 @@
 import re
+from math import sqrt
 
 def convert_sides_to_num(in_sides):
     return [int(side,2) for side in in_sides]
@@ -14,23 +15,9 @@ def generate_configurations(in_sides):
 
     return [in_sides, flipped]
 
-re_numbers = re.compile(r'\d+')
-inputs = open('inputs/20').read().split('\n\n')
-input_tiles = {}
-
-NUMBER_OF_TILES = len(inputs)
-TILE_SIZE = len(inputs[0].split('\n')[0])
-
-for tile in inputs:
-    tile_data = tile.split('\n')
-    ID = re.findall(re_numbers, tile_data[0])[0]
-    tile_rows = tile_data[1:]
-    #tile_array = [row for row in tile_rows]
-    #tile_array = [ convert_side_to_num(row) for row in tile_rows]
-    tile_array = [[str(int(column == '#')) for column in row] for row in tile_rows]
-    input_tiles[ID] = tile_array
-
 def read_sides(in_tile):
+    """ reads each side of `in_tile` from left to right and
+    returns a list of four tiles """
     columns = list(zip(*in_tile))
     side_W = list(columns[0])
     side_E = list(columns[TILE_SIZE-1])
@@ -42,19 +29,9 @@ def read_sides(in_tile):
     sides = [''.join(side) for side in sides]
     return sides
 
-tiles_sides_only = {}
-
-
-for ID, tile in input_tiles.items():
-    tile_sides_binary = read_sides(tile)
-    bla = generate_configurations(tile_sides_binary)
-    tile_slides_dec = [convert_sides_to_num(sides) for sides in generate_configurations(tile_sides_binary)]
-    tiles_sides_only[ID] = tile_slides_dec # {elem for sides in tile_slides_dec for elem in sides}
-
-
-matched_tiles = {}
-
 def compare_tiles(ID_fixed, ID_possible_match, tiles_dict):
+    """ checks if any of the sides in `ID_fixed` mathes with any
+    of the sides in possible configurations of `ID_possible_match`"""
     sides_to_look_at = tiles_dict[ID_fixed][0]
     for sides in tiles_dict[ID_possible_match]:
         for side in sides:
@@ -62,21 +39,50 @@ def compare_tiles(ID_fixed, ID_possible_match, tiles_dict):
                 return True
     return False
 
-for compare_with in tiles_sides_only.keys():
-    for ID, tile in tiles_sides_only.items():
-        if ID == compare_with:
+
+# read input from file
+re_numbers = re.compile(r'\d+')
+inputs = open('inputs/20').read().split('\n\n')
+
+# define tile/final image constants
+NUMBER_OF_TILES = len(inputs)
+IMAGE_SIDE_SIZE = int(sqrt(NUMBER_OF_TILES))
+TILE_SIZE = len(inputs[0].split('\n')[0])
+
+# parse input into dict of tiles {ID: actual tile image from input file
+# with '#' converted to '1' and '.' converted to '0'}
+input_tiles = {}
+for tile in inputs:
+    tile_data = tile.split('\n')
+    ID = int(re.findall(re_numbers, tile_data[0])[0])
+    tile_rows = tile_data[1:]
+    tile_array = [[str(int(column == '#')) for column in row] for row in tile_rows]
+    input_tiles[ID] = tile_array
+
+# generate a dictionary which maps tile IDs to a list of possible configurations,
+# where possible configurations are lists of slide numbers, and slide numbers flipped
+tiles_sides_only = { ID: [convert_sides_to_num(sides) for sides in generate_configurations(read_sides(tile))] for ID, tile in input_tiles.items() }
+
+
+# generate a dictionary of matched tiles:
+# {ID: set of matching tiles}
+matched_tiles = {}
+for ID_to_compare_to in tiles_sides_only.keys():
+    for candidate_ID in tiles_sides_only.keys():
+        if candidate_ID == ID_to_compare_to:
             continue
         else:
-            if compare_tiles(ID, compare_with, tiles_sides_only):
-                if compare_with in matched_tiles:
-                    matched_tiles[compare_with].add(ID)
+            if compare_tiles(ID_to_compare_to, candidate_ID, tiles_sides_only):
+                if ID_to_compare_to in matched_tiles:
+                    matched_tiles[ID_to_compare_to].add(candidate_ID)
                 else:
-                    matched_tiles[compare_with] = set([ID])
+                    matched_tiles[ID_to_compare_to] = set([candidate_ID])
+
+
+# split matched tiles into three different categories
 corners = {}
 borders = {}
 middles = {}
-
-party_1 = 1
 for tile, match in matched_tiles.items():
     if len (match) == 2:   # corners
         corners[tile] = match
@@ -85,9 +91,10 @@ for tile, match in matched_tiles.items():
     else:                  # middles
         middles[tile] = match
 
+# party 1 solution: multiply IDs of corner tiles
+party_1 = 1
 for tile in corners:
-    party_1 *= int(tile)
+    party_1 *= tile
 
-print(f'Multiplied corner IDs: {" * ".join(tile for tile in corners)} = {party_1}!')
+print(f'Multiplied corner IDs: {" * ".join(str(tile) for tile in corners)} = {party_1}!')
 # Multiplied corner IDs: 1867 * 2441 * 2633 * 1663 = 19955159604613!
-
