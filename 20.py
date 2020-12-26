@@ -127,8 +127,62 @@ for corner_ID, matches in corners.items():
 
 # find upper left if exists (luckily it does both for my input and test input so
 # I'll just go along with it)
+
+assembly = {}
+# semi manually put the first three tiles in the assembly
 for corner_ID, matched in matched_corner_sides.items():
     if (matched[0][0] == 1 and matched[1][0] == 2) or (matched[0][0] == 2 and matched[1][0] == 1):
         relative_upper_left = corner_ID
+        assembly[corner_ID] = (0,0) # add global position of the tile
+        right = (0,1)
+        down = (1,0)
+        if matched[0][0] == 1:
+            assembly[matched[0][1]] = right
+        if matched[1][0] == 1:
+            assembly[matched[1][1]] = right
+        if matched[0][0] == 2:
+            assembly[matched[0][1]] = down
+        if matched[1][0] == 2:
+            assembly[matched[1][1]] = down
 
-print(relative_upper_left, matched_corner_sides[relative_upper_left])
+
+oriented_tiles = {}
+oriented_tiles[relative_upper_left] = input_tiles[relative_upper_left]
+
+
+# if shared horizontal coordinate, do the left-right check, else do the up down check
+
+print(len(oriented_tiles))
+
+def vertical_match(fixed_tile, tile):
+    test_tile = tile
+    for _ in range(4):
+        if fixed_tile[TILE_SIZE-1] == test_tile[0]:
+            return test_tile
+        test_tile = flip(test_tile)
+        if fixed_tile[TILE_SIZE-1] == test_tile[0]:
+            return test_tile
+        test_tile = rotate_clockwise(test_tile)
+
+def horizontal_match(fixed_tile, tile):
+    test_tile = tile
+    for _ in range(4):
+        if all(fixed_tile[c][TILE_SIZE-1] == test_tile[c][0] for c in range(TILE_SIZE)):
+            return test_tile
+        test_tile = flip(test_tile)
+        if all(fixed_tile[c][TILE_SIZE-1] == test_tile[c][0] for c in range(TILE_SIZE) ):
+            return test_tile
+        test_tile = rotate_clockwise(test_tile)
+
+
+tiles_to_check = set(assembly.keys()).difference(set(oriented_tiles.keys()))
+fixed_tiles = set(assembly.keys()).intersection(set(oriented_tiles.keys()))
+
+for tile in tiles_to_check:
+    for fixed_tile in fixed_tiles:
+        if assembly[fixed_tile][0] == assembly[tile][0]: # and assembly[fixed_tile][1] + 1 == assembly[tile][1]:
+            oriented_tiles[tile] = vertical_match(oriented_tiles[fixed_tile], input_tiles[tile])
+        if assembly[fixed_tile][1] == assembly[tile][1]: # and assembly[fixed_tile][0] + 1 == assembly[tile][0]:
+            oriented_tiles[tile] = horizontal_match(oriented_tiles[fixed_tile], input_tiles[tile])
+
+print(len(oriented_tiles))
