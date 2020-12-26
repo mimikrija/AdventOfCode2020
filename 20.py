@@ -98,3 +98,27 @@ for tile in corners:
 
 print(f'Multiplied corner IDs: {" * ".join(str(tile) for tile in corners)} = {party_1}!')
 # Multiplied corner IDs: 1867 * 2441 * 2633 * 1663 = 19955159604613!
+
+# find 'relative' top-left corner
+matched_corner_sides = {corner_ID: [] for corner_ID in corners}
+for corner_ID, matches in corners.items():
+    for matched_ID in matches:
+        for num_slide, fixed_side in enumerate(tiles_sides_only[corner_ID][0]):
+            for n, configuration in enumerate(tiles_sides_only[matched_ID]):
+                for pos, side in enumerate(configuration):
+                    if side == fixed_side:
+                        if n == 0:
+                            relative_flipped = True
+                        else:
+                            relative_flipped = False
+                        relative_rotation = 3 - pos
+                        #print(f'{corner_ID}, slide no. {num_slide}, matched with: {matched_ID}, flipped: {relative_flipped}, and rotated by {relative_rotation}')
+                        matched_corner_sides[corner_ID].append([num_slide, matched_ID, relative_flipped, relative_rotation])
+
+# find upper left if exists (luckily it does both for my input and test input so
+# I'll just go along with it)
+for corner_ID, matched in matched_corner_sides.items():
+    if (matched[0][0] == 1 and matched[1][0] == 2) or (matched[0][0] == 2 and matched[1][0] == 1):
+        relative_upper_left = corner_ID
+
+print(relative_upper_left, matched_corner_sides[relative_upper_left])
