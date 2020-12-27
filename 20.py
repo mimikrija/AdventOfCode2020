@@ -48,7 +48,7 @@ def flip(in_matrix):
 
 def print_pretty(in_matrix):
     for line in (in_matrix):
-        print (" ".join(str(c) for c in line))
+        print ("".join(str(c) for c in line))
 
 
 # read input from file
@@ -202,5 +202,11 @@ while len(assembly) < NUMBER_OF_TILES:
 def remove_borders(in_matrix):
     return [line[1:len(line)-1] for line in in_matrix[1:len(in_matrix)-1]]
 
-for ID, tile in oriented_tiles.items():
-    oriented_tiles[ID] = remove_borders(tile)
+tiles_without_borders = {ID: remove_borders(tile) for ID, tile in oriented_tiles.items()}
+
+final_image = [[(i,j) for i in range(IMAGE_SIDE_SIZE)] for j in range(IMAGE_SIDE_SIZE)]
+
+
+for ID, coordinate in assembly.items():
+    row, column = coordinate
+    final_image[row][column] = remove_borders(oriented_tiles[ID])
