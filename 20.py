@@ -1,6 +1,7 @@
 import re
 from math import sqrt
 from copy import deepcopy
+from collections import Counter
 
 def convert_sides_to_num(in_sides):
     return [int(side,2) for side in in_sides]
@@ -206,7 +207,7 @@ tiles_without_borders = {ID: remove_borders(tile) for ID, tile in oriented_tiles
 
 final_image = [[(i,j) for i in range(IMAGE_SIDE_SIZE)] for j in range(IMAGE_SIDE_SIZE)]
 
-print(assembly)
+
 
 # print(oriented_tiles[1489][0])
 # print(oriented_tiles[1489][7])
@@ -233,19 +234,60 @@ for mr, main_row in enumerate(final_image):
 really_final_image = [ [num.translate(str.maketrans('10','#.')) for num in row] for row in final_image_flat]
 
 
+monster_top =    "                  # "
+monster_top_rel_pos = [pos for pos, c in enumerate(monster_top) if c == "#"]
+monster_middle = "#    ##    ##    ###"
+monster_middle_rel_pos = [pos for pos, c in enumerate(monster_middle) if c == "#"]
+monster_bottom = " #  #  #  #  #  #   "
+monster_bottom_rel_pos = [pos for pos, c in enumerate(monster_bottom) if c == "#"]
+line_limit = max(monster_bottom_rel_pos+monster_middle_rel_pos+monster_top_rel_pos)
+
+monster_hashes = len(monster_top_rel_pos) + len(monster_middle_rel_pos) + len(monster_bottom_rel_pos)
+
+
+def count_monsters(in_image):
+    monster_count = 0
+    for mid in range(1, len(in_image)-2):
+        top_line = in_image[mid-1]
+        middle_line = in_image[mid]
+        bottom_line = in_image[mid+1]
+        for pos in range (len(middle_line)-line_limit):
+            if all(middle_line[pos+offset] == "#" for offset in monster_middle_rel_pos) and all(top_line[pos+offset] == "#" for offset in monster_top_rel_pos) and all(bottom_line[pos+offset] == "#" for offset in monster_bottom_rel_pos):
+                monster_count += 1
+    return monster_count
+
+
+        # for pos, char in enumerate(in_image[middle_line]):
+        #     # match middle of the monster
+            
+
+
+
+
 
 attempted_image = deepcopy(really_final_image)
 # print_pretty(really_final_image)
-print('----')
+
 for _ in range(4):
-    print_pretty(attempted_image)
-    #attempted_image = rotate_clockwise(attempted_image)
-    print('-----')
+    #print_pretty(attempted_image)
+    string_image = [ "".join(c for c in row) for row in attempted_image ]
+    monster_count = count_monsters(string_image)
+    if monster_count > 0:
+        break
     orig_attempt = deepcopy(attempted_image)
     attempted_image = flip(attempted_image)
-    print_pretty(attempted_image)
-    print('----')
-    
+    string_image = [ "".join(c for c in row) for row in attempted_image ]
+    monster_count = count_monsters(string_image)
+    if monster_count > 0:
+        break
+    #print_pretty(attempted_image)
     attempted_image = rotate_clockwise(orig_attempt)
+all_hashes=0
+for line in string_image:
+    for c in line:
+        if c == "#":
+            all_hashes+=1
+#all_hashes = sum( c=="#" for c in line for line in string_image)
 
-# print_pretty(attempted_image)
+print(f'monster count is {monster_count}')
+print(f'sea roughness is {all_hashes - monster_count*monster_hashes} ')
