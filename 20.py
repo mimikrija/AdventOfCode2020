@@ -184,9 +184,9 @@ def match_tile(fixed_tile, tile, fixed_coordinate):
         test_tile = rotate_clockwise(original_conf)
 
     if match_type == 'vertical':
-        coordinate = (fixed_coordinate[0], fixed_coordinate[1]+1)
-    if match_type == 'horizontal':
         coordinate = (fixed_coordinate[0]+1, fixed_coordinate[1])
+    if match_type == 'horizontal':
+        coordinate = (fixed_coordinate[0], fixed_coordinate[1]+1)
     
     return coordinate, test_tile
 
@@ -206,7 +206,46 @@ tiles_without_borders = {ID: remove_borders(tile) for ID, tile in oriented_tiles
 
 final_image = [[(i,j) for i in range(IMAGE_SIDE_SIZE)] for j in range(IMAGE_SIDE_SIZE)]
 
+print(assembly)
+
+# print(oriented_tiles[1489][0])
+# print(oriented_tiles[1489][7])
+# print(oriented_tiles[1171][0])
+
 
 for ID, coordinate in assembly.items():
     row, column = coordinate
-    final_image[row][column] = remove_borders(oriented_tiles[ID])
+    final_image[row][column] = remove_borders(oriented_tiles[ID])#remove_borders(oriented_tiles[ID])
+
+# flatten matrix
+final_image_flat = []
+for mr, main_row in enumerate(final_image):
+    for subrow in range(TILE_SIZE-2): #range(TILE_SIZE-2): to take into acount removed borders
+        line = []
+        for n in range(len(main_row)):
+            line += main_row[n][subrow]
+        final_image_flat.append(line)
+
+# print(final_image_flat[23])
+# print(tiles_without_borders[1951][7], tiles_without_borders[2311][7], tiles_without_borders[3079][7])
+
+# translate back to #, . from 1, 0
+really_final_image = [ [num.translate(str.maketrans('10','#.')) for num in row] for row in final_image_flat]
+
+
+
+attempted_image = deepcopy(really_final_image)
+# print_pretty(really_final_image)
+print('----')
+for _ in range(3):
+    print_pretty(attempted_image)
+    attempted_image = rotate_clockwise(attempted_image)
+    print('-----')
+    orig_attempt = deepcopy(attempted_image)
+    attempted_image = flip(attempted_image)
+    print_pretty(attempted_image)
+    print('----')
+    
+    attempted_image = rotate_clockwise(orig_attempt)
+
+# print_pretty(attempted_image)
