@@ -237,9 +237,9 @@ really_final_image = [ [num.translate(str.maketrans('10','#.')) for num in row] 
 attempted_image = deepcopy(really_final_image)
 # print_pretty(really_final_image)
 print('----')
-for _ in range(3):
+for _ in range(4):
     print_pretty(attempted_image)
-    attempted_image = rotate_clockwise(attempted_image)
+    #attempted_image = rotate_clockwise(attempted_image)
     print('-----')
     orig_attempt = deepcopy(attempted_image)
     attempted_image = flip(attempted_image)
