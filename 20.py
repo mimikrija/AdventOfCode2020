@@ -1,5 +1,6 @@
 import re
 from math import sqrt
+from copy import deepcopy
 
 def convert_sides_to_num(in_sides):
     return [int(side,2) for side in in_sides]
@@ -129,30 +130,15 @@ for corner_ID, matches in corners.items():
 # I'll just go along with it)
 
 assembly = {}
-# semi manually put the first three tiles in the assembly
+# semi manually put relative_upper_left into assembly/oriented tiles:
 for corner_ID, matched in matched_corner_sides.items():
     if (matched[0][0] == 1 and matched[1][0] == 2) or (matched[0][0] == 2 and matched[1][0] == 1):
         relative_upper_left = corner_ID
         assembly[corner_ID] = (0,0) # add global position of the tile
-        right = (0,1)
-        down = (1,0)
-        if matched[0][0] == 1:
-            assembly[matched[0][1]] = right
-        if matched[1][0] == 1:
-            assembly[matched[1][1]] = right
-        if matched[0][0] == 2:
-            assembly[matched[0][1]] = down
-        if matched[1][0] == 2:
-            assembly[matched[1][1]] = down
-
 
 oriented_tiles = {}
 oriented_tiles[relative_upper_left] = input_tiles[relative_upper_left]
 
-
-# if shared horizontal coordinate, do the left-right check, else do the up down check
-
-print(len(oriented_tiles))
 
 def vertical_match(fixed_tile, tile):
     test_tile = tile
@@ -170,19 +156,48 @@ def horizontal_match(fixed_tile, tile):
         if all(fixed_tile[c][TILE_SIZE-1] == test_tile[c][0] for c in range(TILE_SIZE)):
             return test_tile
         test_tile = flip(test_tile)
-        if all(fixed_tile[c][TILE_SIZE-1] == test_tile[c][0] for c in range(TILE_SIZE) ):
+        if all(fixed_tile[c][TILE_SIZE-1] == test_tile[c][0] for c in range(TILE_SIZE)):
             return test_tile
         test_tile = rotate_clockwise(test_tile)
 
+def match_tile(fixed_tile, tile, fixed_coordinate):
+    test_tile = deepcopy(tile)
+    for _ in range(4):
+        # check vertical match
+        if fixed_tile[TILE_SIZE-1] == test_tile[0]:
+            match_type = 'vertical'
+            break
+        # check horizontal match
+        if all(fixed_tile[c][TILE_SIZE-1] == test_tile[c][0] for c in range(TILE_SIZE)):
+            match_type = 'horizontal'
+            break
+        original_conf = deepcopy(test_tile)
+        test_tile = flip(test_tile)
+        # check vertical match
+        if fixed_tile[TILE_SIZE-1] == test_tile[0]:
+            match_type = 'vertical'
+            break
+        # check horizontal match
+        if all(fixed_tile[c][TILE_SIZE-1] == test_tile[c][0] for c in range(TILE_SIZE)):
+            match_type = 'horizontal'
+            break
+        test_tile = rotate_clockwise(original_conf)
 
-tiles_to_check = set(assembly.keys()).difference(set(oriented_tiles.keys()))
-fixed_tiles = set(assembly.keys()).intersection(set(oriented_tiles.keys()))
+    if match_type == 'vertical':
+        coordinate = (fixed_coordinate[0], fixed_coordinate[1]+1)
+    if match_type == 'horizontal':
+        coordinate = (fixed_coordinate[0]+1, fixed_coordinate[1])
+    
+    return coordinate, test_tile
 
-for tile in tiles_to_check:
-    for fixed_tile in fixed_tiles:
-        if assembly[fixed_tile][0] == assembly[tile][0]: # and assembly[fixed_tile][1] + 1 == assembly[tile][1]:
-            oriented_tiles[tile] = vertical_match(oriented_tiles[fixed_tile], input_tiles[tile])
-        if assembly[fixed_tile][1] == assembly[tile][1]: # and assembly[fixed_tile][0] + 1 == assembly[tile][0]:
-            oriented_tiles[tile] = horizontal_match(oriented_tiles[fixed_tile], input_tiles[tile])
 
-print(len(oriented_tiles))
+
+while len(assembly) < NUMBER_OF_TILES:
+    # find tiles in the assembly which still need to be matched
+    available_tiles_for_matching = {tile for tile in assembly if not all(matched_tile in assembly for matched_tile in matched_tiles[tile])}
+    for fixed_tile in available_tiles_for_matching:
+        candidates = set(matched_tiles[fixed_tile]).difference(set(assembly))
+        for tile in candidates:
+            assembly[tile], oriented_tiles[tile] = match_tile(oriented_tiles[fixed_tile], input_tiles[tile], assembly[fixed_tile])
+
+print('done')
