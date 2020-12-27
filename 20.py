@@ -22,8 +22,8 @@ def read_sides(in_tile):
     side_W = list(columns[0])
     side_E = list(columns[TILE_SIZE-1])
     side_W.reverse()
-    side_N = in_tile[0]
-    side_S = in_tile[TILE_SIZE-1]
+    side_N = in_tile[0].copy()
+    side_S = in_tile[TILE_SIZE-1].copy()
     side_S.reverse()
     sides = [side_N, side_E, side_S, side_W]
     sides = [''.join(side) for side in sides]
