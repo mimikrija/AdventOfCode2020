@@ -191,7 +191,6 @@ def match_tile(fixed_tile, tile, fixed_coordinate):
     return coordinate, test_tile
 
 
-
 while len(assembly) < NUMBER_OF_TILES:
     # find tiles in the assembly which still need to be matched
     available_tiles_for_matching = {tile for tile in assembly if not all(matched_tile in assembly for matched_tile in matched_tiles[tile])}
@@ -200,4 +199,8 @@ while len(assembly) < NUMBER_OF_TILES:
         for tile in candidates:
             assembly[tile], oriented_tiles[tile] = match_tile(oriented_tiles[fixed_tile], input_tiles[tile], assembly[fixed_tile])
 
-print('done')
+def remove_borders(in_matrix):
+    return [line[1:len(line)-1] for line in in_matrix[1:len(in_matrix)-1]]
+
+for ID, tile in oriented_tiles.items():
+    oriented_tiles[ID] = remove_borders(tile)
