@@ -209,29 +209,20 @@ final_image = [[(i,j) for i in range(IMAGE_SIDE_SIZE)] for j in range(IMAGE_SIDE
 
 
 
-# print(oriented_tiles[1489][0])
-# print(oriented_tiles[1489][7])
-# print(oriented_tiles[1171][0])
 
 
 for ID, coordinate in assembly.items():
     row, column = coordinate
-    final_image[row][column] = remove_borders(oriented_tiles[ID])#remove_borders(oriented_tiles[ID])
+    final_image[row][column] = remove_borders(oriented_tiles[ID])
 
 # flatten matrix
 final_image_flat = []
 for mr, main_row in enumerate(final_image):
-    for subrow in range(TILE_SIZE-2): #range(TILE_SIZE-2): to take into acount removed borders
+    for subrow in range(TILE_SIZE-2): # take into acount removed borders
         line = []
         for n in range(len(main_row)):
             line += main_row[n][subrow]
         final_image_flat.append(line)
-
-# print(final_image_flat[23])
-# print(tiles_without_borders[1951][7], tiles_without_borders[2311][7], tiles_without_borders[3079][7])
-
-# translate back to #, . from 1, 0
-really_final_image = [ [num.translate(str.maketrans('10','#.')) for num in row] for row in final_image_flat]
 
 
 monster_top =    "                  # "
@@ -246,48 +237,38 @@ monster_hashes = len(monster_top_rel_pos) + len(monster_middle_rel_pos) + len(mo
 
 
 def count_monsters(in_image):
+    character_matches = lambda line, loc : line[loc] == '1'
+
     monster_count = 0
     for mid in range(1, len(in_image)-2):
         top_line = in_image[mid-1]
         middle_line = in_image[mid]
         bottom_line = in_image[mid+1]
         for pos in range (len(middle_line)-line_limit):
-            if all(middle_line[pos+offset] == "#" for offset in monster_middle_rel_pos) and all(top_line[pos+offset] == "#" for offset in monster_top_rel_pos) and all(bottom_line[pos+offset] == "#" for offset in monster_bottom_rel_pos):
+            if (all(character_matches(middle_line, pos+offset) for offset in monster_middle_rel_pos) and
+               all(character_matches(top_line, pos+offset) for offset in monster_top_rel_pos) and
+               all(character_matches(bottom_line, pos+offset) for offset in monster_bottom_rel_pos)):
                 monster_count += 1
     return monster_count
 
 
-        # for pos, char in enumerate(in_image[middle_line]):
-        #     # match middle of the monster
-            
 
-
-
-
-
-attempted_image = deepcopy(really_final_image)
-# print_pretty(really_final_image)
+attempted_image = deepcopy(final_image_flat)
 
 for _ in range(4):
-    #print_pretty(attempted_image)
-    string_image = [ "".join(c for c in row) for row in attempted_image ]
-    monster_count = count_monsters(string_image)
+    monster_count = count_monsters(attempted_image)
     if monster_count > 0:
         break
     orig_attempt = deepcopy(attempted_image)
     attempted_image = flip(attempted_image)
-    string_image = [ "".join(c for c in row) for row in attempted_image ]
-    monster_count = count_monsters(string_image)
+    monster_count = count_monsters(attempted_image)
     if monster_count > 0:
         break
-    #print_pretty(attempted_image)
     attempted_image = rotate_clockwise(orig_attempt)
-all_hashes=0
-for line in string_image:
-    for c in line:
-        if c == "#":
-            all_hashes+=1
-#all_hashes = sum( c=="#" for c in line for line in string_image)
 
-print(f'monster count is {monster_count}')
-print(f'sea roughness is {all_hashes - monster_count*monster_hashes} ')
+
+all_hashes = sum(c=="1" for line in attempted_image for c in line)
+
+
+print(f'monster count is {monster_count == 21}')
+print(f'sea roughness is {all_hashes - monster_count*monster_hashes == 1639} ')
