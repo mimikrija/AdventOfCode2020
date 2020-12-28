@@ -253,21 +253,21 @@ def count_monsters(in_image):
 
 
 
-attempted_image = deepcopy(final_image_flat)
 
-for _ in range(4):
-    monster_count = count_monsters(attempted_image)
-    if monster_count > 0:
-        break
-    attempted_image = flip(attempted_image)
-    monster_count = count_monsters(attempted_image)
-    if monster_count > 0:
-        break
-    attempted_image = rotate_clockwise(attempted_image)
+def find_monsters(in_image):
+    attempted_image = in_image
+    for _ in range(4):
+        for transformation in (flip, rotate_clockwise):
+            attempted_image = transformation(attempted_image)
+            monster_count = count_monsters(attempted_image)
+            if monster_count > 0:
+                return monster_count
+    return 0
 
 
-all_hashes = sum(c=="1" for line in attempted_image for c in line)
 
+all_hashes = sum(c=="1" for line in final_image_flat for c in line)
+monster_count = find_monsters(final_image_flat)
 
 print(f'monster count is {monster_count == 21}')
 print(f'sea roughness is {all_hashes - monster_count*monster_hashes == 1639} ')
