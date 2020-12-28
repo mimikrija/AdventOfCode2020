@@ -47,10 +47,6 @@ def rotate_clockwise(in_matrix):
 def flip(in_matrix):
     return [[in_matrix[i][j] for j in range(len(in_matrix[0])-1,-1,-1)] for i in range(len(in_matrix))]
 
-def print_pretty(in_matrix):
-    for line in (in_matrix):
-        print ("".join(str(c) for c in line))
-
 
 # read input from file
 re_numbers = re.compile(r'\d+')
@@ -140,26 +136,6 @@ for corner_ID, matched in matched_corner_sides.items():
 oriented_tiles = {}
 oriented_tiles[relative_upper_left] = input_tiles[relative_upper_left]
 
-
-def vertical_match(fixed_tile, tile):
-    test_tile = tile
-    for _ in range(4):
-        if fixed_tile[TILE_SIZE-1] == test_tile[0]:
-            return test_tile
-        test_tile = flip(test_tile)
-        if fixed_tile[TILE_SIZE-1] == test_tile[0]:
-            return test_tile
-        test_tile = rotate_clockwise(test_tile)
-
-def horizontal_match(fixed_tile, tile):
-    test_tile = tile
-    for _ in range(4):
-        if all(fixed_tile[c][TILE_SIZE-1] == test_tile[c][0] for c in range(TILE_SIZE)):
-            return test_tile
-        test_tile = flip(test_tile)
-        if all(fixed_tile[c][TILE_SIZE-1] == test_tile[c][0] for c in range(TILE_SIZE)):
-            return test_tile
-        test_tile = rotate_clockwise(test_tile)
 
 def match_tile(fixed_tile, tile, fixed_coordinate):
     test_tile = deepcopy(tile)
