@@ -2,6 +2,8 @@ import re
 from math import sqrt
 from copy import deepcopy
 from collections import Counter
+from operator import mul
+from functools import reduce
 
 def convert_sides_to_num(in_sides):
     return [int(side,2) for side in in_sides]
@@ -91,9 +93,7 @@ corners = {ID: match for ID, match in matched_tiles.items() if len(match) == 2}
 
 
 # party 1 solution: multiply IDs of corner tiles
-party_1 = 1
-for tile in corners:
-    party_1 *= tile
+party_1 = reduce(mul, (tile for tile in corners))
 
 print(f'Multiplied corner IDs: {" * ".join(str(tile) for tile in corners)} = {party_1}!')
 # Multiplied corner IDs: 1867 * 2441 * 2633 * 1663 = 19955159604613!
