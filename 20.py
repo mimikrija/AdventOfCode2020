@@ -259,12 +259,11 @@ for _ in range(4):
     monster_count = count_monsters(attempted_image)
     if monster_count > 0:
         break
-    orig_attempt = deepcopy(attempted_image)
     attempted_image = flip(attempted_image)
     monster_count = count_monsters(attempted_image)
     if monster_count > 0:
         break
-    attempted_image = rotate_clockwise(orig_attempt)
+    attempted_image = rotate_clockwise(attempted_image)
 
 
 all_hashes = sum(c=="1" for line in attempted_image for c in line)
