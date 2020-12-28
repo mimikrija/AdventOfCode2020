@@ -238,17 +238,16 @@ monster_hashes = len(monster_top_rel_pos) + len(monster_middle_rel_pos) + len(mo
 
 def count_monsters(in_image):
     """ returns the total count of monsters in `in_image` """
-    character_matches = lambda line, loc : line[loc] == '1'
 
+    character_matches = lambda line, loc : line[loc] == '1'
     monster_count = 0
     for mid in range(1, len(in_image)-2):
         top_line = in_image[mid-1]
         middle_line = in_image[mid]
         bottom_line = in_image[mid+1]
+        combo_tuples = ((top_line, monster_top_rel_pos), (middle_line, monster_middle_rel_pos), (bottom_line, monster_bottom_rel_pos))
         for pos in range (len(middle_line)-line_limit):
-            if (all(character_matches(middle_line, pos+offset) for offset in monster_middle_rel_pos) and
-               all(character_matches(top_line, pos+offset) for offset in monster_top_rel_pos) and
-               all(character_matches(bottom_line, pos+offset) for offset in monster_bottom_rel_pos)):
+            if all(character_matches(line, pos+offset) for line, offsets in combo_tuples for offset in offsets):
                 monster_count += 1
     return monster_count
 
