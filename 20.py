@@ -14,7 +14,6 @@ def generate_configurations(in_sides):
     # the property of any non-flipped configuration is that *ALL* the sides are not reversed.
     # hence (for matching purposes) it is enough to generate a list of sides and a list of flipped sides
     flipped = reversed([''.join(reversed(side)) for side in in_sides])
-
     return [in_sides, flipped]
 
 def read_sides(in_tile):
@@ -88,16 +87,8 @@ for ID_to_compare_to in tiles_sides_only.keys():
 
 
 # split matched tiles into three different categories
-corners = {}
-borders = {}
-middles = {}
-for tile, match in matched_tiles.items():
-    if len (match) == 2:   # corners
-        corners[tile] = match
-    elif len (match) == 3: # borders
-        borders[tile] = match
-    else:                  # middles
-        middles[tile] = match
+corners = {ID: match for ID, match in matched_tiles.items() if len(match) == 2}
+
 
 # party 1 solution: multiply IDs of corner tiles
 party_1 = 1
