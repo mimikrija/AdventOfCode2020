@@ -224,16 +224,18 @@ for mr, main_row in enumerate(final_image):
             line += main_row[n][subrow]
         final_image_flat.append(line)
 
-
-monster_top =    "                  # "
-monster_top_rel_pos = [pos for pos, c in enumerate(monster_top) if c == "#"]
-monster_middle = "#    ##    ##    ###"
-monster_middle_rel_pos = [pos for pos, c in enumerate(monster_middle) if c == "#"]
-monster_bottom = " #  #  #  #  #  #   "
-monster_bottom_rel_pos = [pos for pos, c in enumerate(monster_bottom) if c == "#"]
-line_limit = max(monster_bottom_rel_pos+monster_middle_rel_pos+monster_top_rel_pos)
-
-monster_hashes = len(monster_top_rel_pos) + len(monster_middle_rel_pos) + len(monster_bottom_rel_pos)
+# define monster constants
+MONSTER_TOP =    "                  # "
+MONSTER_MIDDLE = "#    ##    ##    ###"
+MONSTER_BOTTOM = " #  #  #  #  #  #   "
+# relative offsets of hashes in the monster string
+MONSTER_TOP_REL_POS = [pos for pos, c in enumerate(MONSTER_TOP) if c == "#"]
+MONSTER_MIDDLE_REL_POS = [pos for pos, c in enumerate(MONSTER_MIDDLE) if c == "#"]
+MONSTER_BOTTOM_REL_POS = [pos for pos, c in enumerate(MONSTER_BOTTOM) if c == "#"]
+# line limit we don't want to search after because the monster won't fit
+LINE_LIMIT = max(MONSTER_BOTTOM_REL_POS + MONSTER_MIDDLE_REL_POS + MONSTER_TOP_REL_POS)
+# total number of "#" symbols per monster (we need that for the final result)
+HASHES_PER_MONSTER = len(MONSTER_TOP_REL_POS) + len(MONSTER_MIDDLE_REL_POS) + len(MONSTER_BOTTOM_REL_POS)
 
 
 def count_monsters(in_image):
@@ -245,8 +247,8 @@ def count_monsters(in_image):
         top_line = in_image[mid-1]
         middle_line = in_image[mid]
         bottom_line = in_image[mid+1]
-        combo_tuples = ((top_line, monster_top_rel_pos), (middle_line, monster_middle_rel_pos), (bottom_line, monster_bottom_rel_pos))
-        for pos in range (len(middle_line)-line_limit):
+        combo_tuples = ((top_line, MONSTER_TOP_REL_POS), (middle_line, MONSTER_MIDDLE_REL_POS), (bottom_line, MONSTER_BOTTOM_REL_POS))
+        for pos in range (len(middle_line)-LINE_LIMIT):
             if all(character_matches(line, pos+offset) for line, offsets in combo_tuples for offset in offsets):
                 monster_count += 1
     return monster_count
@@ -269,4 +271,4 @@ all_hashes = sum(c=="1" for line in final_image_flat for c in line)
 monster_count = find_monsters(final_image_flat)
 
 print(f'monster count is {monster_count == 21}')
-print(f'sea roughness is {all_hashes - monster_count*monster_hashes == 1639} ')
+print(f'sea roughness is {all_hashes - monster_count*HASHES_PER_MONSTER == 1639} ')
