@@ -237,6 +237,7 @@ monster_hashes = len(monster_top_rel_pos) + len(monster_middle_rel_pos) + len(mo
 
 
 def count_monsters(in_image):
+    """ returns the total count of monsters in `in_image` """
     character_matches = lambda line, loc : line[loc] == '1'
 
     monster_count = 0
@@ -251,10 +252,9 @@ def count_monsters(in_image):
                 monster_count += 1
     return monster_count
 
-
-
-
 def find_monsters(in_image):
+    """ change `in_image` configurations until a configuration is found
+    which actually has monsters in it """
     attempted_image = in_image
     for _ in range(4):
         for transformation in (flip, rotate_clockwise):
