@@ -267,8 +267,10 @@ def find_monsters(in_image):
 
 
 
-all_hashes = sum(c=="1" for line in final_image_flat for c in line)
+all_hashes_in_image = sum(c=="1" for line in final_image_flat for c in line)
 monster_count = find_monsters(final_image_flat)
 
-print(f'monster count is {monster_count == 21}')
-print(f'sea roughness is {all_hashes - monster_count*HASHES_PER_MONSTER == 1639} ')
+party_2 = all_hashes_in_image - monster_count * HASHES_PER_MONSTER
+
+print(f'monster count is {monster_count == 21}!')
+print(f'Party 2 solution, the "sea roughness" is {party_2 == 1639}!')
