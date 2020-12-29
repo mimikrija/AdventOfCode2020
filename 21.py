@@ -17,21 +17,21 @@ for line in inputs:
 
 
 # generate dictionary of potential alergens
-potential_alergens = {alergen: set() for alergen in ALL_ALERGENS}
-for alergens, ingredients in all_foods:
-    for alergen in alergens:
-        potential_alergens[alergen] = potential_alergens[alergen].union(ingredients)
-
-determined_alergens = dict()
+# {alergen: {potentialy dangerous foods}}
+potential_alergens = dict()
 for alergen in ALL_ALERGENS:
-    result = ALL_INGREDIENTS.copy()
-    for alergens, ingredients in all_foods:
-        if alergen in alergens:
-            result = result.intersection(ingredients)
-    potential_alergens[alergen] = result
+    # in theory, everything is an alergen
+    dangerous_ingredients = ALL_INGREDIENTS.copy()
+    for listed_alergens, ingredients in all_foods:
+        # but only if the alergen we are looking for is listed for this food
+        if alergen in listed_alergens:
+            # .. the ingredients that food contains potentially contain this alergen
+            dangerous_ingredients = dangerous_ingredients.intersection(ingredients)
+    potential_alergens[alergen] = dangerous_ingredients
 
 # keep eliminating as long as the number of determined alergens
 # is less than number of total alergens
+determined_alergens = dict()
 while len(determined_alergens) < len(ALL_ALERGENS):
     for alergen, potential_ingredients in potential_alergens.items():
         # eliminate already determined ingredients from the potential ingredients
