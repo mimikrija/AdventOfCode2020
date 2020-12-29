@@ -40,12 +40,9 @@ while len(determined_alergens) < len(ALL_ALERGENS):
             determined_alergens[alergen] = candidates.pop()
 
 not_alergens = ALL_INGREDIENTS.difference(set(determined_alergens.values()))
-part_1 = 0
 
-for _, ingredients in all_foods:
-    for ingredient in ingredients:
-        part_1 += ingredient in not_alergens
-
+# count all ocurrences of safe ingredients in the list of foods
+part_1 = sum(sum(ingredient in not_alergens for ingredient in listed_ingredients) for _, listed_ingredients in all_foods)
 
 part_2 = ','.join(item for item in sorted(determined_alergens))
 
