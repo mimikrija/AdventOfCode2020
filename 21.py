@@ -44,11 +44,11 @@ not_alergens = ALL_INGREDIENTS.difference(set(determined_alergens.values()))
 # count all ocurrences of safe ingredients in the list of foods
 part_1 = sum(sum(ingredient in not_alergens for ingredient in listed_ingredients) for _, listed_ingredients in all_foods)
 
-part_2 = ','.join(item for item in sorted(determined_alergens))
+# list ingredients sorted by the alergen they contain
+part_2 = ','.join(determined_alergens[alergen] for alergen in sorted(determined_alergens))
 
 print(f'Non-alergens appear in my list of foods {part_1} times!')
 # Non-alergens appear in my list of foods 1977 times!
 
-
 print(f'The list of my dangerous ingredients is: {part_2}')
-# The list of my dangerous ingredients is: dairy,eggs,fish,nuts,peanuts,sesame,shellfish,wheat!
+# The list of my dangerous ingredients is: dpkvsdk,xmmpt,cxjqxbt,drbq,zmzq,mnrjrf,kjgl,rkcpxs
