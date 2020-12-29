@@ -225,11 +225,16 @@ def find_monsters(in_image):
     which actually has monsters in it """
     attempted_image = in_image
     for _ in range(4):
-        for transformation in (flip, rotate_clockwise):
-            attempted_image = transformation(attempted_image)
-            monster_count = count_monsters(attempted_image)
-            if monster_count > 0:
-                return monster_count
+        attempted_image = rotate_clockwise(attempted_image)
+        monster_count = count_monsters(attempted_image)
+        if monster_count > 0:
+            return monster_count
+    attempted_image = flip(attempted_image)
+    for _ in range(4):
+        attempted_image = rotate_clockwise(attempted_image)
+        monster_count = count_monsters(attempted_image)
+        if monster_count > 0:
+            return monster_count
     return 0
 
 
