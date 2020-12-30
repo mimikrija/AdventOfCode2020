@@ -174,10 +174,6 @@ tiles_without_borders = {ID: remove_borders(tile) for ID, tile in oriented_tiles
 
 final_image = [[(i,j) for i in range(IMAGE_SIDE_SIZE)] for j in range(IMAGE_SIDE_SIZE)]
 
-
-
-
-
 for ID, coordinate in assembly.items():
     row, column = coordinate
     final_image[row][column] = remove_borders(oriented_tiles[ID])
