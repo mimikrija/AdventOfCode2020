@@ -20,7 +20,7 @@ def tile_neighbors(in_hex):
     return set(hex_neighbor(in_hex, direction) for direction in HEX_DIRECTIONS)
 
 def art_installation(in_black_tiles):
-    out_black_tiles = in_black_tiles.copy()
+    out_black_tiles = set()
     relevant_white_tiles = set()
     for tile in in_black_tiles:
         relevant_white_tiles |= set(neighbor for neighbor in tile_neighbors(tile) if neighbor not in in_black_tiles)
@@ -28,9 +28,7 @@ def art_installation(in_black_tiles):
     for tile in in_black_tiles | relevant_white_tiles:
         neighbors = tile_neighbors(tile)
         count_black_adjacents = sum(neighbor in in_black_tiles for neighbor in neighbors)
-        if tile in in_black_tiles and (count_black_adjacents == 0 or count_black_adjacents > 2):
-            out_black_tiles.remove(tile)
-        if tile in relevant_white_tiles and count_black_adjacents == 2:
+        if (tile in in_black_tiles and 0 < count_black_adjacents <= 2) or (tile in relevant_white_tiles and count_black_adjacents == 2):
             out_black_tiles.add(tile)
 
     return out_black_tiles
