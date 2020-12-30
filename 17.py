@@ -3,18 +3,6 @@ import itertools
 
 DELTAS = {dimension: set(itertools.product({-1,0,1}, repeat=dimension)) - {tuple(0 for _ in range(dimension))} for dimension in {3,4}}
 
-# parse input into a set
-with open('inputs/17') as inputfile:
-    inputs = inputfile.readlines()
-active_cubes_3D = {(row_num, column_num, 0)
-                        for row_num, row in enumerate(inputs)
-                        for column_num, column in enumerate(row.strip())
-                        if column == '#'}
-
-active_cubes_4D = {(row_num, column_num, 0, 0)
-                        for row_num, row in enumerate(inputs)
-                        for column_num, column in enumerate(row.strip())
-                        if column == '#'}
 
 def add_coordinates(tuple_1, tuple_2):
     return tuple(t_1 + t_2 for t_1, t_2 in zip(tuple_1,tuple_2))
@@ -36,11 +24,25 @@ def conway_cycle(in_active_cubes, dimension):
 
     return out_active_cubes
 
-cycles = 6
+# parse input into 3D and 4D set
+with open('inputs/17') as inputfile:
+    inputs = inputfile.readlines()
 
+active_cubes_3D = {(row_num, column_num, 0)
+                        for row_num, row in enumerate(inputs)
+                        for column_num, column in enumerate(row.strip())
+                        if column == '#'}
+
+active_cubes_4D = {(row_num, column_num, 0, 0)
+                        for row_num, row in enumerate(inputs)
+                        for column_num, column in enumerate(row.strip())
+                        if column == '#'}
+
+cycles = 6
 for _ in range(cycles):
     active_cubes_3D = conway_cycle(active_cubes_3D, 3)
     active_cubes_4D = conway_cycle(active_cubes_4D, 4)
+
 party_1 = len(active_cubes_3D)
 party_2 = len(active_cubes_4D)
 
