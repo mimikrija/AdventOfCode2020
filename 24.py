@@ -46,10 +46,8 @@ for instruction in instructions:
     position = (0, 0, 0)
     for direction in instruction:
         position = hex_add(position, HEX_DIRECTIONS[direction])
-    if position in black_tiles:
-        black_tiles.remove(position)
-    else:
-        black_tiles.add(position)
+    black_tiles ^= {position}
+
 
 part_1 = len(black_tiles)
 print(f'After all the flipping, {part_1} tiles are left black side up!')
