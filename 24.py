@@ -58,7 +58,7 @@ print(f'After all the flipping, {part_1} tiles are left black side up!')
 current_floor = flipped_tiles
 
 days_of_art = 100
-for day in range(100):
+for day in range(days_of_art):
     current_floor = art_installation(current_floor)
 part_2 = len(current_floor)
 
