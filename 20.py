@@ -111,7 +111,6 @@ for corner_ID, matches in corners.items():
                         else:
                             relative_flipped = False
                         relative_rotation = 3 - pos
-                        #print(f'{corner_ID}, slide no. {num_slide}, matched with: {matched_ID}, flipped: {relative_flipped}, and rotated by {relative_rotation}')
                         matched_corner_sides[corner_ID].append([num_slide, matched_ID, relative_flipped, relative_rotation])
 
 # find upper left if exists (luckily it does both for my input and test input so
@@ -130,6 +129,9 @@ oriented_tiles[relative_upper_left] = input_tiles[relative_upper_left]
 
 def match_tile(fixed_tile, tile, fixed_coordinate):
     test_tile = deepcopy(tile)
+    # if I organize this the same way as in find_monsters, it does not work
+    # I give up honestly, it works this way but I don't know why it doesn't work
+    # the other way.
     for _ in range(4):
         # check vertical match
         if fixed_tile[TILE_SIZE-1] == test_tile[0]:
@@ -240,5 +242,7 @@ monster_count = find_monsters(final_image_flat)
 
 party_2 = all_hashes_in_image - monster_count * HASHES_PER_MONSTER
 
-print(f'monster count is {monster_count == 21}!')
-print(f'Party 2 solution, the "sea roughness" is {party_2 == 1639}!')
+print(f'There are {monster_count} monsters in the sea!')
+print(f'Party 2 solution, the "sea roughness" is {party_2}!')
+# There are 21 monsters in the sea!
+# Party 2 solution, the "sea roughness" is 1639!
