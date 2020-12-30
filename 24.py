@@ -1,6 +1,4 @@
 import re
-with open('inputs/24') as inputfile:
-    inputs = inputfile.readlines()
 
 HEX_DIRECTIONS = {
     'nw': (0, 1, -1),
@@ -11,7 +9,6 @@ HEX_DIRECTIONS = {
      'w': (-1, 1, 0)
 }
 
-re_directions = re.compile(r'nw|ne|se|sw|e|w')
 
 def hex_add(in_hex_a, in_hex_b):
     return tuple(coordinate_a + coordinate_b for coordinate_a, coordinate_b in zip(in_hex_a, in_hex_b))
@@ -38,11 +35,14 @@ def art_installation(in_black_tiles):
 
     return out_black_tiles
 
+# read and parse input into u a set of black tiles positions
+with open('inputs/24') as inputfile:
+    inputs = inputfile.readlines()
 
-instructions = [re.findall(re_directions, line) for line in inputs]
+re_directions = re.compile(r'nw|ne|se|sw|e|w') 
 
 black_tiles = set()
-for instruction in instructions:
+for instruction in (re.findall(re_directions, line) for line in inputs):
     position = (0, 0, 0)
     for direction in instruction:
         position = hex_add(position, HEX_DIRECTIONS[direction])
@@ -52,7 +52,6 @@ for instruction in instructions:
 part_1 = len(black_tiles)
 print(f'After all the flipping, {part_1} tiles are left black side up!')
 # After all the flipping, 469 tiles are left black side up!
-
 
 days_of_art = 100
 for day in range(days_of_art):
