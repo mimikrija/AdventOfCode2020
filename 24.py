@@ -23,14 +23,14 @@ def tile_neighbors(in_hex):
     return set(hex_neighbor(in_hex, direction) for direction in HEX_DIRECTIONS)
 
 def art_installation(in_black_tiles):
-    new_floor = in_black_tiles.copy()
-    expanded_floor = in_black_tiles.copy()
+    out_black_tiles = in_black_tiles.copy()
+    black_tiles_and_neighbors = in_black_tiles.copy()
     for tile in in_black_tiles:
         # expand mesh
-        expanded_floor |= tile_neighbors(tile)
+        black_tiles_and_neighbors |= tile_neighbors(tile)
 
     # LOOP THROUGH EXPANDED MESH OTHERWISE THERE IS REALLY NO POINT OF EXPANDING IS IT?!
-    for tile in expanded_floor:
+    for tile in black_tiles_and_neighbors:
         neighbors = tile_neighbors(tile)
         count_black_adjacents = sum(candidate in in_black_tiles for candidate in neighbors)
         
@@ -38,14 +38,14 @@ def art_installation(in_black_tiles):
         # else it remains the same (black) and needs to remain in the dictionary as black hence the `not`
         if tile in in_black_tiles:
             if count_black_adjacents == 0 or count_black_adjacents > 2: # if it is in the set it means it is black
-                new_floor.remove(tile)
+                out_black_tiles.remove(tile)
 
         # Any white tile with exactly 2 black tiles immediately adjacent to it is flipped to black.
         else:
             if count_black_adjacents == 2:
-                new_floor.add(tile)
+                out_black_tiles.add(tile)
 
-    return new_floor
+    return out_black_tiles
 
 
 instructions = [re.findall(re_directions, line) for line in inputs]
@@ -64,7 +64,7 @@ part_1 = len(flipped_tiles)
 print(f'After all the flipping, {part_1} tiles are left black side up!')
 # After all the flipping, 469 tiles are left black side up!
 
-current_floor = flipped_tiles.copy()
+current_floor = flipped_tiles
 
 days_of_art = 100
 for day in range(100):
