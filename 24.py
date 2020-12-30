@@ -24,26 +24,17 @@ def tile_neighbors(in_hex):
 
 def art_installation(in_black_tiles):
     out_black_tiles = in_black_tiles.copy()
-    black_tiles_and_neighbors = in_black_tiles.copy()
+    relevant_white_tiles = set()
     for tile in in_black_tiles:
-        # expand mesh
-        black_tiles_and_neighbors |= tile_neighbors(tile)
+        relevant_white_tiles |= set(neighbor for neighbor in tile_neighbors(tile) if neighbor not in in_black_tiles)
 
-    # LOOP THROUGH EXPANDED MESH OTHERWISE THERE IS REALLY NO POINT OF EXPANDING IS IT?!
-    for tile in black_tiles_and_neighbors:
+    for tile in in_black_tiles | relevant_white_tiles:
         neighbors = tile_neighbors(tile)
-        count_black_adjacents = sum(candidate in in_black_tiles for candidate in neighbors)
-        
-        # Any black tile with zero or more than 2 black tiles immediately adjacent to it is flipped to white
-        # else it remains the same (black) and needs to remain in the dictionary as black hence the `not`
-        if tile in in_black_tiles:
-            if count_black_adjacents == 0 or count_black_adjacents > 2: # if it is in the set it means it is black
-                out_black_tiles.remove(tile)
-
-        # Any white tile with exactly 2 black tiles immediately adjacent to it is flipped to black.
-        else:
-            if count_black_adjacents == 2:
-                out_black_tiles.add(tile)
+        count_black_adjacents = sum(neighbor in in_black_tiles for neighbor in neighbors)
+        if tile in in_black_tiles and (count_black_adjacents == 0 or count_black_adjacents > 2):
+            out_black_tiles.remove(tile)
+        if tile in relevant_white_tiles and count_black_adjacents == 2:
+            out_black_tiles.add(tile)
 
     return out_black_tiles
 
