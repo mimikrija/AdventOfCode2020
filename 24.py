@@ -17,13 +17,13 @@ def hex_neighbor(in_hex, direction):
     return hex_add(in_hex, HEX_DIRECTIONS[direction])
 
 def tile_neighbors(in_hex):
-    return set(hex_neighbor(in_hex, direction) for direction in HEX_DIRECTIONS)
+    return {hex_neighbor(in_hex, direction) for direction in HEX_DIRECTIONS}
 
 def art_installation(in_black_tiles):
     out_black_tiles = set()
     relevant_white_tiles = set()
     for tile in in_black_tiles:
-        relevant_white_tiles |= set(neighbor for neighbor in tile_neighbors(tile) if neighbor not in in_black_tiles)
+        relevant_white_tiles |= {neighbor for neighbor in tile_neighbors(tile) if neighbor not in in_black_tiles}
 
     for tile in in_black_tiles | relevant_white_tiles:
         neighbors = tile_neighbors(tile)
