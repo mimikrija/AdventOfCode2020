@@ -41,26 +41,25 @@ def art_installation(in_black_tiles):
 
 instructions = [re.findall(re_directions, line) for line in inputs]
 
-flipped_tiles = set()
+black_tiles = set()
 for instruction in instructions:
     position = (0, 0, 0)
     for direction in instruction:
         position = hex_add(position, HEX_DIRECTIONS[direction])
-    if position in flipped_tiles:
-        flipped_tiles.remove(position)
+    if position in black_tiles:
+        black_tiles.remove(position)
     else:
-        flipped_tiles.add(position)
+        black_tiles.add(position)
 
-part_1 = len(flipped_tiles)
+part_1 = len(black_tiles)
 print(f'After all the flipping, {part_1} tiles are left black side up!')
 # After all the flipping, 469 tiles are left black side up!
 
-current_floor = flipped_tiles
 
 days_of_art = 100
 for day in range(days_of_art):
-    current_floor = art_installation(current_floor)
-part_2 = len(current_floor)
+    black_tiles = art_installation(black_tiles)
+part_2 = len(black_tiles)
 
 print(f'After {days_of_art} days of art installation, there are {part_2} black tiles in the lobby!')
 # After 100 days of art installation, there are 4353 black tiles in the lobby!
