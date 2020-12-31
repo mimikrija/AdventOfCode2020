@@ -4,7 +4,7 @@ DELTAS = {dimension: set(itertools.product({-1,0,1}, repeat=dimension)) - {tuple
 
 
 def add_coordinates(tuple_1, tuple_2):
-    return tuple(t_1 + t_2 for t_1, t_2 in zip(tuple_1,tuple_2))
+    return tuple(t_1 + t_2 for t_1, t_2 in itertools.zip_longest(tuple_1, tuple_2, fillvalue=0))
 
 def cube_neighbors(coordinate, dimension):
     return {add_coordinates(coordinate, delta) for delta in DELTAS[dimension]}
@@ -27,15 +27,11 @@ def conway_cycle(in_active_cubes, dimension):
 with open('inputs/17') as inputfile:
     inputs = inputfile.readlines()
 
-active_cubes_3D = {(row_num, column_num, 0)
-                        for row_num, row in enumerate(inputs)
-                        for column_num, column in enumerate(row.strip())
-                        if column == '#'}
-
-active_cubes_4D = {(row_num, column_num, 0, 0)
-                        for row_num, row in enumerate(inputs)
-                        for column_num, column in enumerate(row.strip())
-                        if column == '#'}
+active_cubes_3D, active_cubes_4D = ({add_coordinates((row_num, column_num), tuple(0 for _ in range(dimension)))
+                                    for row_num, row in enumerate(inputs)
+                                    for column_num, column in enumerate(row.strip())
+                                    if column == '#'}
+                                    for dimension in {3,4})
 
 cycles = 6
 for _ in range(cycles):
