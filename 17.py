@@ -27,7 +27,7 @@ def conway_cycle(in_active_cubes, dimension):
 with open('inputs/17') as inputfile:
     inputs = inputfile.readlines()
 
-active_cubes_3D, active_cubes_4D = ({add_coordinates((row_num, column_num), tuple(0 for _ in range(dimension)))
+active_cubes_3D_4D = ({add_coordinates((row_num, column_num), tuple(0 for _ in range(dimension)))
                                     for row_num, row in enumerate(inputs)
                                     for column_num, column in enumerate(row.strip())
                                     if column == '#'}
@@ -35,8 +35,9 @@ active_cubes_3D, active_cubes_4D = ({add_coordinates((row_num, column_num), tupl
 
 cycles = 6
 for _ in range(cycles):
-    active_cubes_3D = conway_cycle(active_cubes_3D, 3)
-    active_cubes_4D = conway_cycle(active_cubes_4D, 4)
+    active_cubes_3D_4D = (conway_cycle(active_cubes, dimension) for active_cubes, dimension in zip(active_cubes_3D_4D, {3,4}))
+
+active_cubes_3D, active_cubes_4D = active_cubes_3D_4D
 
 party_1 = len(active_cubes_3D)
 party_2 = len(active_cubes_4D)
