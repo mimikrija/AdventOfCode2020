@@ -1,4 +1,3 @@
-from collections import Counter
 with open('inputs/21') as inputfile:
     inputs = inputfile.readlines()
 
