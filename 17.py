@@ -1,10 +1,10 @@
 import itertools
 
-DELTAS = {dimension: set(itertools.product({-1,0,1}, repeat=dimension)) - {tuple(0 for _ in range(dimension))} for dimension in {3,4}}
+DELTAS = {dimension: set(itertools.product({-1, 0, 1}, repeat=dimension)) - {tuple(0 for _ in range(dimension))} for dimension in {3, 4}}
 
 
 def add_coordinates(tuple_1, tuple_2):
-    return tuple(t_1 + t_2 for t_1, t_2 in itertools.zip_longest(tuple_1, tuple_2, fillvalue=0))
+    return tuple(t_1 + t_2 for t_1, t_2 in itertools.zip_longest(tuple_1, tuple_2, fillvalue = 0))
 
 def cube_neighbors(coordinate, dimension):
     return {add_coordinates(coordinate, delta) for delta in DELTAS[dimension]}
