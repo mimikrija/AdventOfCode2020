@@ -44,7 +44,3 @@ for n, instruction in enumerate(instructions):
         print(f'Part 2 solution is: {current_acc}!')
         break
 # Part 2 solution is: 1877!
-
-# success:  1877 this one
-# success:  505 not
-# success:  895 not
