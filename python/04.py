@@ -35,7 +35,6 @@ def is_hcl_valid(test_value):
 
 def is_ecl_valid(test_value):
     return test_value in ['amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth']
-    return False
 
 def is_pid_valid(test_value):
     try:
