@@ -1,3 +1,5 @@
+# Day 17: Conway Cubes
+
 import itertools
 
 DELTAS = {dimension: set(itertools.product({-1, 0, 1}, repeat=dimension)) - {tuple(0 for _ in range(dimension))} for dimension in {3, 4}}

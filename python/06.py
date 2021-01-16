@@ -1,3 +1,5 @@
+# Day 6: Custom Customs
+
 from collections import Counter
 
 # read data in bulks split by \n\n :)

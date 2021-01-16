@@ -1,3 +1,5 @@
+# Day 10: Adapter Array
+
 from collections import Counter
 with open('inputs/10') as inputfile:
     inputs = inputfile.readlines()

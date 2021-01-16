@@ -1,3 +1,5 @@
+# Day 9: Encoding Error
+
 with open('inputs/09') as inputfile:
     inputs = inputfile.readlines()
 

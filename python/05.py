@@ -1,3 +1,5 @@
+# Day 5: Binary Boarding
+
 with open('inputs/05') as inputfile:
     boarding_passes = inputfile.readlines()
 

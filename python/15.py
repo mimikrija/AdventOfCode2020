@@ -1,3 +1,5 @@
+# Day 15: Rambunctious Recitation
+
 starting_numbers = open('inputs/15').read().split(',')
 starting_numbers = [int(num) for num in starting_numbers]
 

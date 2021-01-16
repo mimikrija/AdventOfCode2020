@@ -1,3 +1,5 @@
+# Day 24: Lobby Layout
+
 import re
 
 HEX_DIRECTIONS = {

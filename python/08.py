@@ -1,3 +1,4 @@
+# Day 8: Handheld Halting
 
 with open('inputs/08') as inputfile:
     inputs = inputfile.readlines()

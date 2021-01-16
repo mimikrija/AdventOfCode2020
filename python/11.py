@@ -1,3 +1,5 @@
+# Day 11: Seating System
+
 import copy
 import collections
 

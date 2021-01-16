@@ -1,3 +1,5 @@
+# Day 3: Toboggan Trajectory
+
 def is_tree(row, column):
     # if column is out of range, the map continues hence %
     return row[column%row_length] == "#"

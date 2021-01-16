@@ -1,3 +1,5 @@
+# Day 7: Handy Haversacks
+
 import re
 
 with open('inputs/07') as inputfile:

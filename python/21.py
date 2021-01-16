@@ -1,3 +1,5 @@
+# Day 21: Allergen Assessment
+
 with open('inputs/21') as inputfile:
     inputs = inputfile.readlines()
 

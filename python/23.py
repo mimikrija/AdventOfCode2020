@@ -1,3 +1,5 @@
+# Day 23: Crab Cups
+
 def get_picked_up(in_current_cup, in_cups):
     picked_up = set()
     current_cup = in_cups[in_current_cup]

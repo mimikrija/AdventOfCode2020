@@ -1,4 +1,5 @@
-# --- Day 22: Crab Combat ---
+# Day 22: Crab Combat
+
 from collections import deque
 
 cards_input = open('inputs/22').read().split('\n\n')
