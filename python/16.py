@@ -64,9 +64,7 @@ def match_fields(in_possible):
         if len(possible_categories) == 1:
             matched_category = in_possible.pop(field)[0]
             for name, cat_list in in_possible.items():
-                #new_cat_list = cat_list
                 cat_list.remove(possible_categories[0])
-                in_possible[name] = cat_list
             return matched_category, field
 
 # do find_unique until we match all the fields
